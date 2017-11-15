@@ -10,8 +10,7 @@ class SwapManager(val activity: Activity) {
 
     fun changeFragments(fragment: Fragment, shouldAddToStack: Boolean) {
         activity.fragmentManager.beginTransaction().apply {
-            //TODO 1: change id to something meaningful
-            replace(-1, fragment)
+            replace(R.id.content_main, fragment)
             if(shouldAddToStack)
                 addToBackStack(null)
             commit()
