@@ -18,11 +18,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -50,8 +45,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+            R.id.nav_instagram -> {
+                return true
+            }
+
+            R.id.nav_fb ->{
+                return true
+            }
+
+            R.id.nav_snap ->{
+                return true
+            }
+
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
 
