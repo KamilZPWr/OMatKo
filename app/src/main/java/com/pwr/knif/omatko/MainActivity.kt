@@ -45,8 +45,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+            R.id.nav_instagram -> {
+                return true
+            }
+
+            R.id.nav_fb ->{
+                return true
+            }
+
+            R.id.nav_snap ->{
+                return true
+            }
+
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
 

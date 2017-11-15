@@ -10,7 +10,11 @@
     <string name="title_nav_history">Poprzednie edycje</string>
     <string name="title_nav_sponsors">Nasi sponsorzy</string>
     <string name="title_nav_contact">Kontakt</string>
+    <string name="title_ic_instagram">Instagram</string>
+    <string name="title_ic_fb">Facebook</string>
+    <string name="title_ic_snap">Snapchat</string>
 
     <string name="nav_header_desc">Oficjalne logo konferencji</string>
+
 
 </resources>
