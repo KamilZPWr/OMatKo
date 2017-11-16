@@ -9,7 +9,7 @@ import android.app.Fragment
 class SwapManager(val activity: Activity) {
 
     fun changeFragments(fragment: Fragment, shouldAddToStack: Boolean) {
-        activity.fragmentManager.beginTransaction().apply {
+        with(activity.fragmentManager.beginTransaction()) {
             replace(R.id.content_main, fragment)
             if(shouldAddToStack)
                 addToBackStack(null)

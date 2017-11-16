@@ -7,7 +7,6 @@ data class PersonContact(
         val name:String,
         val jobTitle: String,
         val telephoneNumber: String,
-        val mailAdress: String,
+        val mailAddress: String,
         val description:String,
-        val image: Int) {
-}
+        val image: Int)
