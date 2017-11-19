@@ -11,8 +11,16 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity :
+        AppCompatActivity(),
+        NavigationView.OnNavigationItemSelectedListener,
+        PersonContactFragment.OnListFragmentInteractionListener {
 
+    val swapManager: SwapManager = SwapManager(this)
+
+    override fun onListFragmentInteraction(item: PersonContact) {
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -78,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_contact -> {
-
+                swapManager.changeFragments(PersonContactFragment(),true)
             }
         }
 

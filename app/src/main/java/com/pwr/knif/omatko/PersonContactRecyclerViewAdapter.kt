@@ -4,19 +4,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 
 import com.pwr.knif.omatko.PersonContactFragment.OnListFragmentInteractionListener
-import com.pwr.knif.omatko.dummy.DummyContent.DummyItem
+import kotlinx.android.synthetic.main.fragment_personcontact.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [PersonContact] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class PersonContactRecyclerViewAdapter(
-        private val mValues: List<DummyItem>,
-        private val mListener: OnListFragmentInteractionListener?
+        private val values: List<PersonContact>,
+        private val listener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<PersonContactRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,31 +24,34 @@ class PersonContactRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = mValues[position]
-        holder.mIdView.text = mValues[position].id
-        holder.mContentView.text = mValues[position].content
+        val contact = values[position]
+        
+        holder.fill(contact)
 
-        holder.mView.setOnClickListener {
-            mListener?.onListFragmentInteraction(holder.mItem!!)
+        holder.view.setOnClickListener {
+            listener?.onListFragmentInteraction(holder.personContact!!)
         }
     }
 
-    override fun getItemCount(): Int {
-        return mValues.size
-    }
+    override fun getItemCount() = values.size
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView
-        val mContentView: TextView
-        var mItem: DummyItem? = null
-
-        init {
-            mIdView = mView.findViewById<View>(R.id.id) as TextView
-            mContentView = mView.findViewById<View>(R.id.content) as TextView
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        var personContact: PersonContact? = null
+        
+        fun fill(contact: PersonContact) {
+            personContact = contact
+            view.apply {
+                tv_personcontact_name.text = contact.name
+                tv_personcontact_position.text = contact.jobTitle
+                tv_personcontact_telephone.text = contact.telephoneNumber
+                tv_personcontact_mail.text = contact.mailAddress
+                tv_personcontact_description.text = contact.description
+                img_personcontact.setImageResource(contact.imageId)
+            }
         }
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '" + view.tv_personcontact_name.text + "'"
         }
     }
 }

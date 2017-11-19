@@ -9,5 +9,5 @@ data class PersonContact(
         val telephoneNumber: String,
         val mailAddress: String,
         val description: String,
-        val image: Int
+        val imageId: Int
 )

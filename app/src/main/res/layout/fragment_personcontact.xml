@@ -1,20 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--TODO: remove mock data-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:background="@drawable/background_contact_person"
+    android:padding="2pt">
+
+    <ImageView
+        android:id="@+id/img_personcontact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2pt"
+        app:srcCompat="@drawable/ic_contact_person" />
 
     <TextView
-        android:id="@+id/id"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_personcontact_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"/>
+        android:padding="2pt"
+        android:text="Imię Nazwisko"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_personcontact_position"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"/>
+        android:layout_marginLeft="2pt"
+        android:text="Stanowisko"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_personcontact_telephone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2pt"
+        android:text="tel. XXX-XXX-XXX"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_personcontact_mail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2pt"
+        android:text="e-mail: xxxxxxxxxxxx@xxx.pl"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_personcontact_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2pt"
+        android:paddingBottom="3pt"
+        android:text="Jestem kimś ważnym na tej konferencji, możecie do mnie dzwonić zawsze i wszędzie!"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
 </LinearLayout>
