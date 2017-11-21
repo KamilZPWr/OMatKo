@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.pwr.knif.omatko.PersonContactFragment.OnListFragmentInteractionListener
+import com.pwr.knif.omatko.PersonContactFragment.OnPersonContactListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_personcontact.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [PersonContact] and makes a call to the
- * specified [OnListFragmentInteractionListener].
+ * specified [OnPersonContactListFragmentInteractionListener].
  */
 class PersonContactRecyclerViewAdapter(
-        private val values: List<PersonContact>,
-        private val listener: OnListFragmentInteractionListener?
+        val contactsList: List<PersonContact>,
+        val listener: OnPersonContactListFragmentInteractionListener?
 ) : RecyclerView.Adapter<PersonContactRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,23 +24,23 @@ class PersonContactRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val contact = values[position]
+        val contact = contactsList[position]
         
         holder.fill(contact)
 
-        holder.view.setOnClickListener {
+        holder.contactView.setOnClickListener {
             listener?.onListFragmentInteraction(holder.personContact!!)
         }
     }
 
-    override fun getItemCount() = values.size
+    override fun getItemCount() = contactsList.size
 
-    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(var contactView: View) : RecyclerView.ViewHolder(contactView) {
         var personContact: PersonContact? = null
         
         fun fill(contact: PersonContact) {
             personContact = contact
-            view.apply {
+            contactView.apply {
                 tv_personcontact_name.text = contact.name
                 tv_personcontact_position.text = contact.jobTitle
                 tv_personcontact_telephone.text = contact.telephoneNumber
@@ -51,7 +51,7 @@ class PersonContactRecyclerViewAdapter(
         }
 
         override fun toString(): String {
-            return super.toString() + " '" + view.tv_personcontact_name.text + "'"
+            return super.toString() + " '" + contactView.tv_personcontact_name.text + "'"
         }
     }
 }

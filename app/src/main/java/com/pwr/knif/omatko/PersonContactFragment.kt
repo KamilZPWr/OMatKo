@@ -13,7 +13,7 @@ import android.view.ViewGroup
  * A fragment representing a list of Items.
  *
  *
- * Activities containing this fragment MUST implement the [PersonContactFragment.OnListFragmentInteractionListener]
+ * Activities containing this fragment MUST implement the [PersonContactFragment.OnPersonContactListFragmentInteractionListener]
  * interface.
  */
 class PersonContactFragment : Fragment() {
@@ -22,7 +22,7 @@ class PersonContactFragment : Fragment() {
  * fragment (e.g. upon screen orientation changes).
  */
 
-    private var listener: OnListFragmentInteractionListener? = null
+    private var listener: OnPersonContactListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +46,14 @@ class PersonContactFragment : Fragment() {
                     PersonContact("Jakub Dąbek","Programista",
                             "782-592-297","jakub.dabek@gmail.com",
                             "Jestem studentem I roku Informatyki na Politechnice Wrocławskiej. " +
+                                    "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
+                    PersonContact("Kamil Zawistowski","Programista",
+                            "668-213-793","zawistowski96kamil@gmail.com",
+                            "Jestem studentem III roku Matematyki Stosowanej na Politechnice Wrocławskiej. " +
+                                    "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
+                    PersonContact("Jakub Dąbek","Programista",
+                            "782-592-297","jakub.dabek@gmail.com",
+                            "Jestem studentem I roku Informatyki na Politechnice Wrocławskiej. " +
                                     "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person))
 
             view.adapter = PersonContactRecyclerViewAdapter(list, listener)
@@ -53,13 +61,12 @@ class PersonContactFragment : Fragment() {
         return view
     }
 
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
+        if (context is OnPersonContactListFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context!!.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException(context!!.toString() + " must implement OnPersonContactListFragmentInteractionListener")
         }
     }
 
@@ -77,7 +84,7 @@ class PersonContactFragment : Fragment() {
      *
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
-    interface OnListFragmentInteractionListener {
+    interface OnPersonContactListFragmentInteractionListener {
         fun onListFragmentInteraction(item: PersonContact)
     }
 }
