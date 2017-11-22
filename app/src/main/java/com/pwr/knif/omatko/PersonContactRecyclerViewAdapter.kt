@@ -1,9 +1,13 @@
 package com.pwr.knif.omatko
 
 import android.support.v7.widget.RecyclerView
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 import com.pwr.knif.omatko.PersonContactFragment.OnPersonContactListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_personcontact.view.*
@@ -47,6 +51,8 @@ class PersonContactRecyclerViewAdapter(
                 tv_personcontact_mail.text = contact.mailAddress
                 tv_personcontact_description.text = contact.description
                 img_personcontact.setImageResource(contact.imageId)
+                Log.d(this::class.java.name, Linkify.addLinks(tv_personcontact_telephone, Linkify.PHONE_NUMBERS).toString())
+                Log.d(this::class.java.name, Linkify.addLinks(tv_personcontact_mail, Linkify.EMAIL_ADDRESSES).toString())
             }
         }
 

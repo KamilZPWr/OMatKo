@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
     android:name="com.pwr.knif.omatko.PersonContactFragment"
+    android:background="@color/colorWindowBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.pwr.knif.omatko.PersonContactFragment"
     tools:listitem="@layout/fragment_personcontact" />

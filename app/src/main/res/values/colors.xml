@@ -2,8 +2,13 @@
 <resources>
     <color name="colorPrimary">#0088A8</color>
     <color name="colorPrimaryDark">#007d99</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorAccent">@color/colorRedOmatko</color>
     <color name="colorNavigationBar">#007d99</color>
     <color name="colorWhiteOmatko">#FEFEFE</color>
     <color name="colorNavBackground">#F5F5F5</color>
+    <color name="colorWindowBackground">#E0E0E0</color>
+    <color name="colorGreenOmatko">#2AA12D</color>
+    <color name="colorBlueOmatko">#0088A8</color>
+    <color name="colorRedOmatko">#AA4300</color>
 </resources>

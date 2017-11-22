@@ -40,19 +40,19 @@ class PersonContactFragment : Fragment() {
             //TODO: get real data
             val list = listOf(
                     PersonContact("Kamil Zawistowski","Programista",
-                            "668-213-793","zawistowski96kamil@gmail.com",
+                            "+48 668-213-793","zawistowski96kamil@gmail.com",
                             "Jestem studentem III roku Matematyki Stosowanej na Politechnice Wrocławskiej. " +
                                     "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
                     PersonContact("Jakub Dąbek","Programista",
-                            "782-592-297","jakub.dabek@gmail.com",
+                            "+48 782-592-297","jakub.dabek@gmail.com",
                             "Jestem studentem I roku Informatyki na Politechnice Wrocławskiej. " +
                                     "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
                     PersonContact("Kamil Zawistowski","Programista",
-                            "668-213-793","zawistowski96kamil@gmail.com",
+                            "+48 668-213-793","zawistowski96kamil@gmail.com",
                             "Jestem studentem III roku Matematyki Stosowanej na Politechnice Wrocławskiej. " +
                                     "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
                     PersonContact("Jakub Dąbek","Programista",
-                            "782-592-297","jakub.dabek@gmail.com",
+                            "+48 782-592-297","jakub.dabek@gmail.com",
                             "Jestem studentem I roku Informatyki na Politechnice Wrocławskiej. " +
                                     "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person))
 
