@@ -71,7 +71,7 @@ class MainActivity :
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_schedule -> {
-
+                swapManager.changeFragments(ScheduleEventFragment(),true)
             }
             R.id.nav_assessment -> {
 
