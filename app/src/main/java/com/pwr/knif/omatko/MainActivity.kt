@@ -14,13 +14,21 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
-        PersonContactFragment.OnPersonContactListFragmentInteractionListener {
+        PersonContactFragment.OnPersonContactListFragmentInteractionListener,
+        ScheduleEventFragment.OnScheduleEventListFragmentInteractionListener{
 
     val swapManager: SwapManager = SwapManager(this)
 
     override fun onListFragmentInteraction(item: PersonContact) {
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onListFragmentInteraction(item: ScheduleEvent) {
+        if (item.isTicked == false){
+            Toast.makeText(this,"Obserwujesz ${item.title}!",Toast.LENGTH_LONG).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

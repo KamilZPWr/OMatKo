@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import java.sql.Time
+import java.util.*
 
 /**
  * Created by Kamil on 27.11.2017.
@@ -32,8 +34,21 @@ class ScheduleEventFragment : Fragment() {
         if (view is RecyclerView) {
             val context = view.context
             view.layoutManager = LinearLayoutManager(context)
-            var list = listOf(ScheduleEvent("id","Title","Presenter",
-                    "Description",false))
+            var list = listOf(ScheduleEvent("id","Jakiś dziwny wykład","Jan Kowalski",
+                    "Krótki opis"
+                    , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam"),
+                    ScheduleEvent("id","Kolejny dziwny wykład","Janusz Polaczek",
+                    "Na tym wykładzie nie będzie się nic działo! Jeśli chcesz odespać stracone noce to zapraszam."
+                            ,""),
+                    ScheduleEvent("id","Title","Presenter", "Description",""),
+                    ScheduleEvent("id","Jakiś dziwny wykład","Jan Kowalski",
+                            "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam"
+                            ,""),
+                    ScheduleEvent("id","Kolejny dziwny wykład","Janusz Polaczek",
+                            "Na tym wykładzie nie będzie się nic działo! Jeśli chcesz odespać stracone noce to zapraszam."
+                            ,""),
+                    ScheduleEvent("id","Title","Presenter", "Description",""))
+
             //TODO: get real data
 
             view.adapter = ScheduleEventRecyclerViewAdapter(list, listener)
