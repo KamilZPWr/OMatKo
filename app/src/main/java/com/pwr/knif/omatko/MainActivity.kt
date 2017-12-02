@@ -15,7 +15,7 @@ class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         PersonContactFragment.OnPersonContactListFragmentInteractionListener,
-        ScheduleEventFragment.OnScheduleEventListFragmentInteractionListener{
+        ScheduleEventFragmentFriday.OnScheduleEventListFragmentInteractionListener{
 
     val swapManager: SwapManager = SwapManager(this)
 
@@ -79,7 +79,7 @@ class MainActivity :
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_schedule -> {
-                swapManager.changeFragments(ScheduleEventFragment(),true)
+                swapManager.changeFragments(ScheduleEventFragmentFriday(),true)
             }
             R.id.nav_assessment -> {
 

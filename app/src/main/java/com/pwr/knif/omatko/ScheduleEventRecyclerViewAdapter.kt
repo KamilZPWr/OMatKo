@@ -4,12 +4,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 
 class ScheduleEventRecyclerViewAdapter(
         val eventList: List<ScheduleEvent>,
-        val listener: ScheduleEventFragment.OnScheduleEventListFragmentInteractionListener?
+        val listener: ScheduleEventFragmentFriday.OnScheduleEventListFragmentInteractionListener?
 ) : RecyclerView.Adapter<ScheduleEventRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,6 +32,11 @@ class ScheduleEventRecyclerViewAdapter(
             event.isTicked = !event.isTicked
             fill()
         }
+
+        holder.eventView.setOnClickListener {
+            event.showLongDescription = !event.showLongDescription
+            fill()
+        }
     }
 
     override fun getItemCount() = eventList.size
@@ -53,11 +57,17 @@ class ScheduleEventRecyclerViewAdapter(
                 }else{
                     ticket_event.setBackgroundResource(R.drawable.background_not_ticked_event)
                 }
+
+                if (event.showLongDescription){
+                    tv_event_description.setText(event.longDescription)
+                }else{
+                    tv_event_description.setText(event.shortDescription)
+                }
             }
         }
 
         override fun toString(): String {
-            return super.toString() + "OK"
+            return super.toString()
         }
     }
 

@@ -8,13 +8,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import java.sql.Time
-import java.util.*
 
 /**
  * Created by Kamil on 27.11.2017.
  */
-class ScheduleEventFragment : Fragment() {
+class ScheduleEventFragmentFriday : Fragment() {
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -30,26 +28,26 @@ class ScheduleEventFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_scheduleevent_list, container, false)
 
-        // Set the adapter
         if (view is RecyclerView) {
             val context = view.context
             view.layoutManager = LinearLayoutManager(context)
+
+            //TODO: get real data
+
             var list = listOf(ScheduleEvent("id","Jakiś dziwny wykład","Jan Kowalski",
                     "Krótki opis"
                     , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam"),
                     ScheduleEvent("id","Kolejny dziwny wykład","Janusz Polaczek",
                     "Na tym wykładzie nie będzie się nic działo! Jeśli chcesz odespać stracone noce to zapraszam."
-                            ,""),
-                    ScheduleEvent("id","Title","Presenter", "Description",""),
+                            ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
+                    ScheduleEvent("id","Title","Presenter", "Description","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
                     ScheduleEvent("id","Jakiś dziwny wykład","Jan Kowalski",
                             "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam"
-                            ,""),
+                            ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
                     ScheduleEvent("id","Kolejny dziwny wykład","Janusz Polaczek",
                             "Na tym wykładzie nie będzie się nic działo! Jeśli chcesz odespać stracone noce to zapraszam."
-                            ,""),
-                    ScheduleEvent("id","Title","Presenter", "Description",""))
-
-            //TODO: get real data
+                            ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
+                    ScheduleEvent("id","Title","Presenter", "Description","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."))
 
             view.adapter = ScheduleEventRecyclerViewAdapter(list, listener)
         }
