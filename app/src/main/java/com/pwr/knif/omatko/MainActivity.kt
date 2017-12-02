@@ -2,6 +2,7 @@ package com.pwr.knif.omatko
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,9 @@ import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import android.support.v4.view.ViewPager
+import kotlinx.android.synthetic.main.view_pager.*
+
 
 class MainActivity :
         AppCompatActivity(),
@@ -18,6 +22,9 @@ class MainActivity :
         ScheduleEventFragmentFriday.OnScheduleEventListFragmentInteractionListener{
 
     val swapManager: SwapManager = SwapManager(this)
+    lateinit var viewPager: ViewPager
+    lateinit var pagerAdapter: SchedulePagerAdapter
+    val scheduleFragments:ArrayList<Fragment> = arrayListOf(ScheduleEventFragmentFriday())
 
     override fun onListFragmentInteraction(item: PersonContact) {
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
@@ -32,10 +39,19 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
 
-        setupNavigatorDrawer()
         //TODO: switch to main fragment
+        try{
+            viewPager = findViewById(R.id.viewPager)!!
+            pagerAdapter = SchedulePagerAdapter(supportFragmentManager, scheduleFragments)
+            viewPager.adapter = pagerAdapter
+        }catch (ex:Exception){
+            Toast.makeText(this,ex.message,Toast.LENGTH_LONG).show()
+        }
+
+
+        setSupportActionBar(toolbar)
+        setupNavigatorDrawer()
     }
 
     override fun onBackPressed() {
@@ -79,7 +95,7 @@ class MainActivity :
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_schedule -> {
-                swapManager.changeFragments(ScheduleEventFragmentFriday(),true)
+                swapManager.changeFragments(ScheduleFragment(),true)
             }
             R.id.nav_assessment -> {
 
