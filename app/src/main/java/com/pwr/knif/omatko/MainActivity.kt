@@ -12,7 +12,6 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import android.support.v4.view.ViewPager
-import kotlinx.android.synthetic.main.view_pager.*
 
 
 class MainActivity :
@@ -24,7 +23,7 @@ class MainActivity :
     val swapManager: SwapManager = SwapManager(this)
     lateinit var viewPager: ViewPager
     lateinit var pagerAdapter: SchedulePagerAdapter
-    val scheduleFragments:ArrayList<Fragment> = arrayListOf(ScheduleEventFragmentFriday())
+    val scheduleFragments:ArrayList<Fragment> = arrayListOf(ScheduleEventFragmentFriday(),PersonContactFragment())
 
     override fun onListFragmentInteraction(item: PersonContact) {
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
