@@ -2,6 +2,7 @@ package com.pwr.knif.omatko
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -12,6 +13,8 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import android.support.v4.view.ViewPager
+import android.view.View
+import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity :
@@ -29,27 +32,17 @@ class MainActivity :
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onListFragmentInteraction(item: ScheduleEvent) {
-        if (item.isTicked == false){
-            Toast.makeText(this,"Obserwujesz ${item.title}!",Toast.LENGTH_LONG).show()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //TODO: switch to main fragment
-        try{
-            viewPager = findViewById(R.id.viewPager)!!
-            pagerAdapter = SchedulePagerAdapter(supportFragmentManager, scheduleFragments)
-            viewPager.adapter = pagerAdapter
-        }catch (ex:Exception){
-            Toast.makeText(this,ex.message,Toast.LENGTH_LONG).show()
-        }
+        viewPager = findViewById(R.id.viewPager)!!
+        pagerAdapter = SchedulePagerAdapter(supportFragmentManager, scheduleFragments)
+        viewPager.adapter = pagerAdapter
 
-
+        activateAppBar(tabLayout,viewPager)
         setSupportActionBar(toolbar)
+
         setupNavigatorDrawer()
     }
 
@@ -94,7 +87,8 @@ class MainActivity :
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_schedule -> {
-                swapManager.changeFragments(ScheduleFragment(),true)
+                swapManager.changeFragments(ScheduleFragments(),true)
+                tabLayout.visibility = View.VISIBLE
             }
             R.id.nav_assessment -> {
 
@@ -110,6 +104,7 @@ class MainActivity :
             }
             R.id.nav_contact -> {
                 swapManager.changeFragments(PersonContactFragment(),true)
+                tabLayout.visibility = View.GONE
             }
         }
 
@@ -124,5 +119,12 @@ class MainActivity :
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    fun activateAppBar(tabLayout: TabLayout,viewPager: ViewPager){
+        tabLayout.setupWithViewPager(viewPager,true)
+        tabLayout.getTabAt(0)!!.text="piątek"
+        tabLayout.getTabAt(1)!!.text="sobota"
+        tabLayout.getTabAt(2)!!.text="niedziela"
     }
 }
