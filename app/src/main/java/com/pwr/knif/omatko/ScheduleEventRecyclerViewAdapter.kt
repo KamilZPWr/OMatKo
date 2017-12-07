@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 
-class ScheduleEventRecyclerViewAdapter(
-        val eventList: List<ScheduleEvent>,
-        val listener: ScheduleEventFragmentFriday.OnScheduleEventListFragmentInteractionListener?
-) : RecyclerView.Adapter<ScheduleEventRecyclerViewAdapter.ViewHolder>() {
+class ScheduleEventRecyclerViewAdapter(val eventList: List<ScheduleEvent>) :
+        RecyclerView.Adapter<ScheduleEventRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -20,22 +18,17 @@ class ScheduleEventRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val event = eventList[position]
 
-        fun fill():Boolean{
-            holder.fill(event)
-            return true
-        }
-
-        fill()
+        holder.fill(event)
 
         holder.eventView.setOnLongClickListener {
-            listener?.onListFragmentInteraction(holder.scheduleEvent!!)
-            event.isTicked = !event.isTicked
-            fill()
+            event.isChecked = !event.isChecked
+            holder.update()
+            true
         }
 
         holder.eventView.setOnClickListener {
             event.showLongDescription = !event.showLongDescription
-            fill()
+            holder.update()
         }
     }
 
@@ -50,19 +43,25 @@ class ScheduleEventRecyclerViewAdapter(
             eventView.apply {
                 tv_event_title.setText(event.title)
                 tv_event_presenter.setText(event.presenter)
-                tv_event_description.setText(event.shortDescription)
+            }
+            update()
+        }
 
-                if (event.isTicked){
-                    ticket_event.setBackgroundResource(R.drawable.background_ticked_event)
-                }else{
-                    ticket_event.setBackgroundResource(R.drawable.background_not_ticked_event)
-                }
+        fun update() {
+            val event = scheduleEvent!!
+            eventView.apply {
+                ticket_event.setBackgroundResource(
+                        if (event.isChecked)
+                            R.drawable.background_ticked_event
+                        else
+                            R.drawable.background_not_ticked_event)
 
-                if (event.showLongDescription){
-                    tv_event_description.setText(event.longDescription)
-                }else{
-                    tv_event_description.setText(event.shortDescription)
-                }
+                tv_event_description.text =
+                        if (event.showLongDescription) {
+                            event.longDescription
+                        } else {
+                            event.shortDescription
+                        }
             }
         }
 

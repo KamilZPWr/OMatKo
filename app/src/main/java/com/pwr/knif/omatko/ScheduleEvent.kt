@@ -9,5 +9,5 @@ class ScheduleEvent (
         val presenter:String,
         val shortDescription:String,
         val longDescription:String,
-        var isTicked:Boolean = false,
+        var isChecked:Boolean = false,
         var showLongDescription:Boolean = false)

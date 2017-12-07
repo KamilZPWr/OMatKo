@@ -12,27 +12,31 @@ import android.view.ViewGroup
 /**
  * Created by Kamil on 27.11.2017.
  */
-class ScheduleEventFragmentFriday : Fragment() {
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+enum class DayOfWeek {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+}
+class ScheduleEventFragment : Fragment() {
 
-    private var listener: OnScheduleEventListFragmentInteractionListener? = null
+    lateinit var dayOfWeek: DayOfWeek
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
+
         val view = inflater.inflate(R.layout.fragment_scheduleevent_list, container, false)
+
+        dayOfWeek = DayOfWeek.valueOf(arguments.getString("DAY_OF_WEEK"))
 
         if (view is RecyclerView) {
             val context = view.context
             view.layoutManager = LinearLayoutManager(context)
 
-            //TODO: get real data
+            //TODO: get real data based on the day of week
 
             var list = listOf(ScheduleEvent("id","Jakiś dziwny wykład","Jan Kowalski",
                     "Krótki opis"
@@ -49,35 +53,9 @@ class ScheduleEventFragmentFriday : Fragment() {
                             ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
                     ScheduleEvent("id","Title","Presenter", "Description","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."))
 
-            view.adapter = ScheduleEventRecyclerViewAdapter(list, listener)
+            view.adapter = ScheduleEventRecyclerViewAdapter(list)
         }
+
         return view
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is OnScheduleEventListFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context!!.toString() + " must implement OnPersonContactListFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
-    interface OnScheduleEventListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: ScheduleEvent)
     }
 }
