@@ -2,6 +2,7 @@ package com.pwr.knif.omatko
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -12,14 +13,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
 import android.view.View
 
-//import com.pwr.knif.omatko.R.id.viewPager
-
-
 class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         PersonContactFragment.OnPersonContactListFragmentInteractionListener {
-
+    lateinit var scheduleFragments: List<Fragment>
     val swapManager = SwapManager(this)
 
     override fun onListFragmentInteraction(item: PersonContact) {
@@ -34,7 +32,14 @@ class MainActivity :
 
         setupNavigatorDrawer()
 
-        swapManager.changeFragments(ScheduleFragment(), false)
+        val bundles = Array(2) { Bundle() }
+        bundles[0].putString("TYPE_OF_SCHEDULE", TypeOfSchedule.THEORETICAL.toString())
+        bundles[1].putString("TYPE_OF_SCHEDULE", TypeOfSchedule.POPULARSCIENCE.toString())
+
+        scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
+
+
+        swapManager.changeFragments(scheduleFragments[0], false)
     }
 
     override fun onBackPressed() {
@@ -76,9 +81,14 @@ class MainActivity :
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
+
         when (item.itemId) {
-            R.id.nav_schedule -> {
-                swapManager.changeFragments(ScheduleFragment(),true)
+            R.id.nav_schedule_theoretical -> {
+                swapManager.changeFragments(scheduleFragments[0],false)
+                tab_layout.visibility = View.VISIBLE
+            }
+            R.id.nav_schedule_popular_science -> {
+                swapManager.changeFragments(scheduleFragments[1],false)
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_assessment -> {
@@ -94,7 +104,7 @@ class MainActivity :
 
             }
             R.id.nav_contact -> {
-                swapManager.changeFragments(PersonContactFragment(),true)
+                swapManager.changeFragments(PersonContactFragment(),false)
                 tab_layout.visibility = View.GONE
             }
         }

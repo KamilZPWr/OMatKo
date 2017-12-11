@@ -10,10 +10,16 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_schedule.view.*
 import kotlinx.android.synthetic.main.layout_main.*
 
-class ScheduleFragment : Fragment() {
+enum class TypeOfSchedule{
+    THEORETICAL, POPULARSCIENCE
+}
+
+class ScheduleFragment() : Fragment() {
 
     lateinit var pagerAdapter: SchedulePagerAdapter
     lateinit var scheduleFragments: List<Fragment>
+    lateinit var typeOfSchedule: String
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -29,18 +35,27 @@ class ScheduleFragment : Fragment() {
 
         activateAppBar(activity.tab_layout, view.view_pager)
 
+
         return view
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        typeOfSchedule = TypeOfSchedule.valueOf(arguments.getString("TYPE_OF_SCHEDULE")).toString()
+
         val bundles = Array(3) { Bundle() }
-        bundles[0].putString("DAY_OF_WEEK", DayOfWeek.FRIDAY.toString())
-        bundles[1].putString("DAY_OF_WEEK", DayOfWeek.SATURDAY.toString())
-        bundles[2].putString("DAY_OF_WEEK", DayOfWeek.SUNDAY.toString())
+        //bundles[0].putString("DAY_OF_WEEK", DayOfWeek.FRIDAY.toString())
+        //bundles[1].putString("DAY_OF_WEEK", DayOfWeek.SATURDAY.toString())
+        //bundles[2].putString("DAY_OF_WEEK", DayOfWeek.SUNDAY.toString())
+
+        bundles[0].putStringArrayList("DAY_AND_TYPE", arrayListOf(DayOfWeek.FRIDAY.toString(), typeOfSchedule))
+        bundles[1].putStringArrayList("DAY_AND_TYPE", arrayListOf(DayOfWeek.SATURDAY.toString() , typeOfSchedule))
+        bundles[2].putStringArrayList("DAY_AND_TYPE", arrayListOf(DayOfWeek.SUNDAY.toString() , typeOfSchedule))
 
         scheduleFragments = bundles.map { ScheduleEventFragment().apply { arguments = it } }
+
+
     }
 
     fun activateAppBar(tabLayout: TabLayout, viewPager: ViewPager){

@@ -9,15 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * Created by Kamil on 27.11.2017.
- */
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
 }
+
 class ScheduleEventFragment : Fragment() {
 
-    lateinit var dayOfWeek: DayOfWeek
+    lateinit var type: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +28,7 @@ class ScheduleEventFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_scheduleevent_list, container, false)
 
-        dayOfWeek = DayOfWeek.valueOf(arguments.getString("DAY_OF_WEEK"))
+        type = arguments.getStringArrayList("DAY_AND_TYPE")
 
         if (view is RecyclerView) {
             val context = view.context
@@ -38,7 +36,7 @@ class ScheduleEventFragment : Fragment() {
 
             //TODO: get real data based on the day of week
 
-            var list = listOf(ScheduleEvent("id","Jakiś dziwny wykład","Jan Kowalski",
+            val list = listOf(ScheduleEvent("id","Dzień "+type[0],"Rodzaj "+type[1],
                     "Krótki opis"
                     , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam"),
                     ScheduleEvent("id","Kolejny dziwny wykład","Janusz Polaczek",
