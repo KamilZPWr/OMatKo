@@ -17,7 +17,7 @@ class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         PersonContactFragment.OnPersonContactListFragmentInteractionListener {
-    lateinit var scheduleFragments: List<Fragment>
+
     val swapManager = SwapManager(this)
 
     override fun onListFragmentInteraction(item: PersonContact) {
@@ -32,14 +32,7 @@ class MainActivity :
 
         setupNavigatorDrawer()
 
-        val bundles = Array(2) { Bundle() }
-        bundles[0].putString("TYPE_OF_SCHEDULE", TypeOfSchedule.THEORETICAL.toString())
-        bundles[1].putString("TYPE_OF_SCHEDULE", TypeOfSchedule.POPULARSCIENCE.toString())
-
-        scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
-
-
-        swapManager.changeFragments(scheduleFragments[0], false)
+        swapManager.changeFragments(ScheduleFragment(), false)
     }
 
     override fun onBackPressed() {
@@ -84,11 +77,11 @@ class MainActivity :
 
         when (item.itemId) {
             R.id.nav_schedule_theoretical -> {
-                swapManager.changeFragments(scheduleFragments[0],false)
+                swapManager.changeFragments(ScheduleFragment(),false)
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_schedule_popular_science -> {
-                swapManager.changeFragments(scheduleFragments[1],false)
+                swapManager.changeFragments(ScheduleFragment(),false)
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_assessment -> {

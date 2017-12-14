@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,11 @@ class ScheduleEventFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onAttach(context: Context?) {
+        Log.e("TAG", "onAttach")
+        super.onAttach(context)
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -28,7 +34,8 @@ class ScheduleEventFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_scheduleevent_list, container, false)
 
-        type = arguments.getStringArrayList("DAY_AND_TYPE")
+        //type = arguments.getStringArrayList("DAY_AND_TYPE")
+        type = arrayListOf("!","2")
 
         if (view is RecyclerView) {
             val context = view.context
@@ -53,7 +60,6 @@ class ScheduleEventFragment : Fragment() {
 
             view.adapter = ScheduleEventRecyclerViewAdapter(list)
         }
-
         return view
     }
 }

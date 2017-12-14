@@ -4,17 +4,14 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 
-/**
- * Created by Kamil on 02.12.2017.
- */
-class SchedulePagerAdapter(fragmentManager: FragmentManager, scheduleFragments: List<Fragment>) :
+class SchedulePagerAdapter(fragmentManager: FragmentManager, dayAndType: MutableList<String>) :
         FragmentStatePagerAdapter(fragmentManager) {
 
-    val fragments = scheduleFragments
-
     override fun getItem(position: Int): Fragment {
-        return fragments[position]
+        var fragment = ScheduleEventFragment()
+        return fragment
     }
 
-    override fun getCount(): Int = fragments.size
+    override fun getCount(): Int = 3
+
 }
