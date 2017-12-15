@@ -8,18 +8,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-enum class DayOfWeek {
-    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
-}
+import kotlinx.android.synthetic.main.fragment_schedule.*
 
 class ScheduleEventFragment : Fragment() {
-
-    lateinit var type: ArrayList<String>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        @JvmStatic
+        val DAY_AND_TYPE = "DAY_AND_TYPE"
     }
+
+    lateinit var type: Array<String>
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -28,7 +25,7 @@ class ScheduleEventFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_scheduleevent_list, container, false)
 
-        type = arguments.getStringArrayList("DAY_AND_TYPE")
+        type = arguments.getStringArray(DAY_AND_TYPE)
 
         if (view is RecyclerView) {
             val context = view.context
