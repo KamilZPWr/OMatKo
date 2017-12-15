@@ -17,11 +17,14 @@
 
     <string name="nav_header_desc">Oficjalne logo konferencji</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="day_of_week_friday">Piątek</string>
-    <string name="day_of_week_saturday">Sobota</string>
-    <string name="day_of_week_sunday">Niedziela</string>
-
+    <string-array name="days_of_week">
+        <item>Poniedziałek</item>
+        <item>Wtorek</item>
+        <item>Środa</item>
+        <item>Czwartek</item>
+        <item>Piątek</item>
+        <item>Sobota</item>
+        <item>Niedziela</item>
+    </string-array>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.pwr.knif.omatko
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -13,10 +14,23 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
 import android.view.View
 
+enum class DayOfWeek {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+
+    override fun toString(): String = "day_of_week_${ this.name.toLowerCase() }"
+
+    fun getResourceString(res: Resources): String {
+        val id = res.getIdentifier(this.toString(), "string", this::class.java.`package`.name)
+
+        return res.getString(id)
+    }
+}
+
 class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         PersonContactFragment.OnPersonContactListFragmentInteractionListener {
+
     lateinit var scheduleFragments: List<Fragment>
     val swapManager = SwapManager(this)
 
@@ -33,8 +47,8 @@ class MainActivity :
         setupNavigatorDrawer()
 
         val bundles = Array(2) { Bundle() }
-        bundles[0].putString("TYPE_OF_SCHEDULE", TypeOfSchedule.THEORETICAL.toString())
-        bundles[1].putString("TYPE_OF_SCHEDULE", TypeOfSchedule.POPULARSCIENCE.toString())
+        bundles[0].putString(TypeOfSchedule.KEY, TypeOfSchedule.THEORETICAL.toString())
+        bundles[1].putString(TypeOfSchedule.KEY, TypeOfSchedule.POPULARSCIENCE.toString())
 
         scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
 

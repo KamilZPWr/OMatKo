@@ -4,22 +4,35 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule.view.*
 import kotlinx.android.synthetic.main.layout_main.*
 
-enum class TypeOfSchedule{
-    THEORETICAL, POPULARSCIENCE
+enum class TypeOfSchedule {
+    THEORETICAL, POPULARSCIENCE;
+
+    companion object {
+        @JvmStatic
+        val KEY = "TYPE_OF_SCHEDULE"
+    }
 }
 
 class ScheduleFragment() : Fragment() {
 
     lateinit var pagerAdapter: SchedulePagerAdapter
-    lateinit var scheduleFragments: List<Fragment>
-    lateinit var typeOfSchedule: String
+    lateinit var typeOfSchedule: TypeOfSchedule
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        typeOfSchedule = TypeOfSchedule.valueOf(arguments.getString(TypeOfSchedule.KEY))
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -29,39 +42,44 @@ class ScheduleFragment() : Fragment() {
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_schedule, container, false)
+        Log.d("TAG", container.toString())
+        pagerAdapter = SchedulePagerAdapter(
+                activity as AppCompatActivity,
+                listOf(
+                        DayOfWeek.FRIDAY,  //.getResourceString(resources),
+                        DayOfWeek.SATURDAY,//.getResourceString(resources),
+                        DayOfWeek.SUNDAY   //.getResourceString(resources)
+                ),
+                typeOfSchedule
+        )
 
-        pagerAdapter = SchedulePagerAdapter(activity.supportFragmentManager, scheduleFragments)
         view.view_pager.adapter = pagerAdapter
+//        if(savedInstanceState != null)
+//            view.view_pager.onRestoreInstanceState(savedInstanceState.getParcelable("STATE"))
 
         activateAppBar(activity.tab_layout, view.view_pager)
-
 
         return view
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+//    override fun onSaveInstanceState(outState: Bundle?) {
+//        super.onSaveInstanceState(outState)
+//        outState?.putParcelable("STATE", view?.view_pager?.onSaveInstanceState())
+//    }
 
-        typeOfSchedule = TypeOfSchedule.valueOf(arguments.getString("TYPE_OF_SCHEDULE")).toString()
-
-        val bundles = Array(3) { Bundle() }
-        //bundles[0].putString("DAY_OF_WEEK", DayOfWeek.FRIDAY.toString())
-        //bundles[1].putString("DAY_OF_WEEK", DayOfWeek.SATURDAY.toString())
-        //bundles[2].putString("DAY_OF_WEEK", DayOfWeek.SUNDAY.toString())
-
-        bundles[0].putStringArrayList("DAY_AND_TYPE", arrayListOf(DayOfWeek.FRIDAY.toString(), typeOfSchedule))
-        bundles[1].putStringArrayList("DAY_AND_TYPE", arrayListOf(DayOfWeek.SATURDAY.toString() , typeOfSchedule))
-        bundles[2].putStringArrayList("DAY_AND_TYPE", arrayListOf(DayOfWeek.SUNDAY.toString() , typeOfSchedule))
-
-        scheduleFragments = bundles.map { ScheduleEventFragment().apply { arguments = it } }
-
-
+    override fun onDestroyView() {
+        Log.d("TAG", "in onDestroyView")
+        //activity.supportFragmentManager.beginTransaction().remove()
+        super.onDestroyView()
+        //activity.supportFragmentManager.saveFragmentInstanceState(this)
+        //for(i in 0..2)
+        //{
+        //    pagerAdapter.destroyItem(activity.content_main, i, pagerAdapter.instantiateItem(activity.content_main, i))
+        //}
+        //pagerAdapter.finishUpdate(activity.content_main)
     }
 
-    fun activateAppBar(tabLayout: TabLayout, viewPager: ViewPager){
-        tabLayout.setupWithViewPager(viewPager,true)
-        tabLayout.getTabAt(0)!!.text = getString(R.string.day_of_week_friday)
-        tabLayout.getTabAt(1)!!.text = getString(R.string.day_of_week_saturday)
-        tabLayout.getTabAt(2)!!.text = getString(R.string.day_of_week_sunday)
+    fun activateAppBar(tabLayout: TabLayout, viewPager: ViewPager) {
+        tabLayout.setupWithViewPager(viewPager, true)
     }
 }
