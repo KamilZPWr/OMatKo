@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,11 @@ class ScheduleEventFragment : Fragment() {
     }
 
     lateinit var type: Array<String>
+
+    override fun onAttach(context: Context?) {
+        Log.e("TAG", "onAttach")
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,

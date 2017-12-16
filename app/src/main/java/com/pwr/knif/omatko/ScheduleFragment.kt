@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,29 +52,9 @@ class ScheduleFragment() : Fragment() {
         )
 
         view.view_pager.adapter = pagerAdapter
-//        if(savedInstanceState != null)
-//            view.view_pager.onRestoreInstanceState(savedInstanceState.getParcelable("STATE"))
-
         activateAppBar(activity.tab_layout, view.view_pager)
 
         return view
-    }
-
-//    override fun onSaveInstanceState(outState: Bundle?) {
-//        super.onSaveInstanceState(outState)
-//        outState?.putParcelable("STATE", view?.view_pager?.onSaveInstanceState())
-//    }
-
-    override fun onDestroyView() {
-        Log.d("TAG", "in onDestroyView")
-        //activity.supportFragmentManager.beginTransaction().remove()
-        super.onDestroyView()
-        //activity.supportFragmentManager.saveFragmentInstanceState(this)
-        //for(i in 0..2)
-        //{
-        //    pagerAdapter.destroyItem(activity.content_main, i, pagerAdapter.instantiateItem(activity.content_main, i))
-        //}
-        //pagerAdapter.finishUpdate(activity.content_main)
     }
 
     fun activateAppBar(tabLayout: TabLayout, viewPager: ViewPager) {
