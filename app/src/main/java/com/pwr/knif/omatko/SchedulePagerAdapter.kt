@@ -13,10 +13,11 @@ import android.support.v7.app.AppCompatActivity
  * Created by Kamil on 02.12.2017.
  */
 class SchedulePagerAdapter(
+        manager: FragmentManager,
         activity: AppCompatActivity,
         val days: List<DayOfWeek>,
         val typeOfSchedule: TypeOfSchedule
-) : FragmentPagerAdapter(activity.supportFragmentManager) {
+) : FragmentPagerAdapter(manager) {
 
     val dayNames = with(activity.resources.getStringArray(R.array.days_of_week)) {
         days.map { day -> this[day.ordinal] }

@@ -44,6 +44,7 @@ class ScheduleFragment() : Fragment() {
         val view = inflater.inflate(R.layout.fragment_schedule, container, false)
         Log.d("TAG", container.toString())
         pagerAdapter = SchedulePagerAdapter(
+                childFragmentManager,
                 activity as AppCompatActivity,
                 listOf(
                         DayOfWeek.FRIDAY,  //.getResourceString(resources),
