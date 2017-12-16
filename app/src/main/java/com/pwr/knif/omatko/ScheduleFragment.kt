@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +44,7 @@ class ScheduleFragment() : Fragment() {
         val view = inflater.inflate(R.layout.fragment_schedule, container, false)
         Log.d("TAG", container.toString())
         pagerAdapter = SchedulePagerAdapter(
+                childFragmentManager,
                 activity as AppCompatActivity,
                 listOf(
                         DayOfWeek.FRIDAY,  //.getResourceString(resources),
