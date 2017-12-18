@@ -1,14 +1,13 @@
 package com.pwr.knif.omatko
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 
-class ScheduleEventRecyclerViewAdapter(val eventList: List<ScheduleEvent>) :
-        RecyclerView.Adapter<ScheduleEventRecyclerViewAdapter.ViewHolder>() {
+class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>) :
+        RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

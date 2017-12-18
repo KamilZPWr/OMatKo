@@ -1,11 +1,9 @@
 package com.pwr.knif.omatko
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
 
@@ -26,14 +24,14 @@ class SchedulePagerAdapter(
     override fun getItem(position: Int): Fragment {
         val bundle = Bundle()
         bundle.putStringArray(
-                ScheduleEventFragment.DAY_AND_TYPE,
+                EventsFragment.DAY_AND_TYPE,
                 arrayOf(
                         days[position].toString(),
                         typeOfSchedule.toString()
                 )
         )
 
-        return ScheduleEventFragment().apply { arguments = bundle }
+        return EventsFragment().apply { arguments = bundle }
     }
 
     override fun getPageTitle(position: Int): CharSequence {
