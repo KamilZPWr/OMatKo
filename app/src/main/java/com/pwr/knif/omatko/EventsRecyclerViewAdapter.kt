@@ -97,20 +97,19 @@ class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>,val context: 
 
             fun findPhoneCalendar():Long{
 
-                val EVENT_PROJECTION = arrayOf<String>(CalendarContract.Calendars._ID)
-                val PROJECTION_ID_INDEX = 0
+                val eventProjection = arrayOf(CalendarContract.Calendars._ID)
+                val projectionIdIndex = 0
                 var calID: Long? = null
                 val queryCursor: Cursor
                 val contentResolver = activity.contentResolver
                 val uri = CalendarContract.Calendars.CONTENT_URI
                 val selection: String = "(" + CalendarContract.Calendars.ACCOUNT_NAME + " = ? )"
-                val selectionArgs = arrayOf<String>("Phone")
+                val selectionArgs = arrayOf("Phone")
 
-                queryCursor = contentResolver.query(uri, EVENT_PROJECTION, selection, selectionArgs, null)
-
+                queryCursor = contentResolver.query(uri, eventProjection, selection, selectionArgs, null)
 
                 while (queryCursor.moveToNext()) {
-                    calID = queryCursor.getLong(PROJECTION_ID_INDEX)
+                    calID = queryCursor.getLong(projectionIdIndex)
                 }
 
                 queryCursor.close()
@@ -128,42 +127,29 @@ class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>,val context: 
                 event.eventCalendarID = eventID
             }
 
-                val calID = findPhoneCalendar()
-                val startMillis: Long
-                val endMillis: Long
-                val beginTime = java.util.Calendar.getInstance()
-                val endTime = java.util.Calendar.getInstance()
-
-                beginTime.set(event.beginTime[0], event.beginTime[1], event.beginTime[2], event.beginTime[3], event.beginTime[4])
-                startMillis = beginTime.getTimeInMillis()
-
-                endTime.set(event.endTime[0], event.endTime[1], event.endTime[2], event.endTime[3], event.endTime[4])
-                endMillis = endTime.getTimeInMillis()
-
-                val calendarCursor = activity.getContentResolver()
+                val calendarID = findPhoneCalendar()
+                val calendarCursor = activity.contentResolver
                 val values = ContentValues()
 
-                values.put(CalendarContract.Events.DTSTART, startMillis)
-                values.put(CalendarContract.Events.DTEND, endMillis)
+                values.put(CalendarContract.Events.DTSTART, event.beginTime)
+                values.put(CalendarContract.Events.DTEND, event.endTime)
                 values.put(CalendarContract.Events.TITLE, event.title)
                 values.put(CalendarContract.Events.DESCRIPTION, event.shortDescription)
-                values.put(CalendarContract.Events.CALENDAR_ID, calID)
+                values.put(CalendarContract.Events.CALENDAR_ID, calendarID)
                 values.put(CalendarContract.Events.EVENT_TIMEZONE, "Central European Time")
 
                 val eventUri: Uri = calendarCursor.insert(CalendarContract.Events.CONTENT_URI, values)
-                val eventID = (eventUri.getLastPathSegment()).toLong()
+                val eventID = (eventUri.lastPathSegment).toLong()
 
                 addReminder(eventID,calendarCursor)
-
                 Toast.makeText(context,"Dodałeś do kalendarza ${event.title}",Toast.LENGTH_LONG).show()
 
         }
 
         fun deleteEventInCalendar(context: Context,activity: Activity,event: ScheduleEvent){
 
-            val deleteUri:Uri
-            deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, event.eventCalendarID!!)
-            activity.getContentResolver().delete(deleteUri, null, null)
+            val deleteUri:Uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, event.eventCalendarID!!)
+            activity.contentResolver.delete(deleteUri, null, null)
             Toast.makeText(context,"Usunąłeś z kalendarza ${event.title}",Toast.LENGTH_LONG).show()
 
         }

@@ -7,8 +7,8 @@ class ScheduleEvent (
         val presenter:String,
         val shortDescription:String,
         val longDescription:String,
-        val beginTime:List<Int>,
-        val endTime:List<Int>,
+        val beginTime: Long,
+        val endTime: Long,
         var isChecked:Boolean = false,
         var showLongDescription:Boolean = false,
         var eventCalendarID:Long? = null)
