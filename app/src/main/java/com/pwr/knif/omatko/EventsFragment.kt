@@ -33,8 +33,8 @@ class EventsFragment : Fragment() {
 
             val list = listOf(ScheduleEvent("id","Dzień "+type[0],"Rodzaj "+type[1],
                     "Krótki opis"
-                    , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam"),
-                    ScheduleEvent("id","Kolejny dziwny wykład","Janusz Polaczek",
+                    , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam", listOf<Int>(2017,11,19,19,0),  listOf<Int>(2017,11,19,19,15)))
+                    /*ScheduleEvent("id","Kolejny dziwny wykład","Janusz Polaczek",
                     "Na tym wykładzie nie będzie się nic działo! Jeśli chcesz odespać stracone noce to zapraszam."
                             ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
                     ScheduleEvent("id","Title","Presenter", "Description","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
@@ -45,8 +45,8 @@ class EventsFragment : Fragment() {
                             "Na tym wykładzie nie będzie się nic działo! Jeśli chcesz odespać stracone noce to zapraszam."
                             ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."),
                     ScheduleEvent("id","Title","Presenter", "Description","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum ex non sollicitudin laoreet. Cras augue nisi, mattis sit amet nunc nec, viverra malesuada quam. Aliquam non condimentum lectus. Nulla et ante congue dui placerat tincidunt a pharetra elit. Maecenas malesuada risus dictum urna aliquam, ut finibus nunc venenatis. Maecenas."))
-
-            view.adapter = EventsRecyclerViewAdapter(list)
+                    */
+            view.adapter = EventsRecyclerViewAdapter(list,context,activity)
         }
 
         return view

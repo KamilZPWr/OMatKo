@@ -52,7 +52,6 @@ class MainActivity :
 
         scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
 
-
         swapManager.changeFragments(scheduleFragments[0], false)
     }
 
