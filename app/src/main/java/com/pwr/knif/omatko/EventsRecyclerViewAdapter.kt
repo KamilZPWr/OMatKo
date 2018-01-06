@@ -20,7 +20,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 
-class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>,val context: Context, val activity:Activity) :
+class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context, val activity:Activity) :
         RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -62,10 +62,10 @@ class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>,val context: 
     override fun getItemCount() = eventList.size
 
     class ViewHolder(var eventView: View) : RecyclerView.ViewHolder(eventView) {
-        var scheduleEvent: ScheduleEvent? = null
+        var event: Event? = null
 
-        fun fill(event: ScheduleEvent) {
-            scheduleEvent = event
+        fun fill(event: Event) {
+            this.event = event
 
             eventView.apply {
                 tv_event_title.setText(event.title)
@@ -75,7 +75,7 @@ class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>,val context: 
         }
 
         fun update() {
-            val event = scheduleEvent!!
+            val event = event!!
             eventView.apply {
                 ticket_event.setBackgroundResource(
                         if (event.isChecked)
@@ -93,7 +93,7 @@ class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>,val context: 
         }
 
         @SuppressLint("MissingPermission")
-        fun addEventToCalendar(context: Context, activity: Activity, event: ScheduleEvent) {
+        fun addEventToCalendar(context: Context, activity: Activity, event: Event) {
 
             fun findPhoneCalendar():Long{
 
@@ -146,7 +146,7 @@ class EventsRecyclerViewAdapter(val eventList: List<ScheduleEvent>,val context: 
 
         }
 
-        fun deleteEventInCalendar(context: Context,activity: Activity,event: ScheduleEvent){
+        fun deleteEventInCalendar(context: Context,activity: Activity,event: Event){
 
             val deleteUri:Uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, event.eventCalendarID!!)
             activity.contentResolver.delete(deleteUri, null, null)

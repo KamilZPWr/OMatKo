@@ -53,6 +53,27 @@ class MainActivity :
         scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
 
         swapManager.changeFragments(scheduleFragments[0], false)
+
+        val databaseManager = DatabaseManager(this)
+        databaseManager.databaseConnection()
+
+        // TEST
+        val timeStart = java.util.Calendar.getInstance().apply {
+            set(2017,11,20,20,0)
+        }
+        val timeEnd = java.util.Calendar.getInstance().apply {
+            set(2017,11,20,21,0)
+        }
+
+        //TODO("Make class to get data from FB and update them in roomDB")
+
+        val list = listOf(Event("eventId","Dzień ","Rodzaj ",
+                "Krótki opis"
+                , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
+                timeStart.timeInMillis, timeEnd.timeInMillis,"test","test"))
+
+        DatabaseManager.AddDataToDatabase().execute(*list.toTypedArray())
+
     }
 
     override fun onBackPressed() {
