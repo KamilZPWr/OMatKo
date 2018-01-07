@@ -8,25 +8,31 @@ import com.pwr.knif.omatko.EventsFragment.Companion.database
 
 class DatabaseManager(private var context : Context){
 
-    fun databaseConnection() {
-        database = Room.databaseBuilder(context, Database::class.java, "appDatabase").build()
-    }
-
-    class GetDataFromDatabase : AsyncTask<String, Void, List<Event>>() {
+    class GetEvents : AsyncTask<String, Void, List<Event>>() {
 
         override fun doInBackground(vararg params: String?): List<Event> {
-            return database.eventDao().getAllEvents() //getEventsBasedOnDayAndType(params[0]!!,params[1]!!)
+            return database.eventDao().getEventsBasedOnDayAndType(params[0]!!,params[1]!!)
         }
 
     }
 
-    class AddDataToDatabase : AsyncTask<Event, Void, Boolean>() {
+    class AddEvents : AsyncTask<Event, Void, Boolean>() {
 
         override fun doInBackground(vararg params: Event?): Boolean {
             database.eventDao().insertEvents(params.toList())
             return true
         }
-
     }
 
+    class DeleteEvents : AsyncTask<Event, Void, Boolean>(){
+
+        override fun doInBackground(vararg params: Event?): Boolean {
+            database.eventDao().deleteEvent(params.toList())
+            return true
+        }
+    }
+
+    fun databaseConnection() {
+        database = Room.databaseBuilder(context, Database::class.java, "appDatabase").build()
+    }
 }

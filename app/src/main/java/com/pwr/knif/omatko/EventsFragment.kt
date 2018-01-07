@@ -30,7 +30,7 @@ class EventsFragment : Fragment() {
         if (view is RecyclerView) {
             val context = view.context
             view.layoutManager = LinearLayoutManager(context)
-            val eventsList = DatabaseManager.GetDataFromDatabase().execute(dayAndType[0], dayAndType[1]).get()
+            val eventsList = DatabaseManager.GetEvents().execute(dayAndType[0], dayAndType[1]).get()
             view.adapter = EventsRecyclerViewAdapter(eventsList,context,activity)
         }
         return view

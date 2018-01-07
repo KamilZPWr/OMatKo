@@ -7,6 +7,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "events")
 data class Event(
 
+        @PrimaryKey
         @ColumnInfo(name = "eventId")
         val eventId:String,
 
@@ -15,6 +16,9 @@ data class Event(
 
         @ColumnInfo(name = "presenter")
         val presenter:String,
+
+        @ColumnInfo(name = "place")
+        val place:String,
 
         @ColumnInfo(name = "shortDescription")
         val shortDescription:String,
@@ -41,9 +45,4 @@ data class Event(
         var showLongDescription:Boolean = false,
 
         @ColumnInfo(name = "eventCalendarID")
-        var eventCalendarID:Long? = null){
-
-    @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true)
-    var id : Long = 0
-}
+        var eventCalendarID:Long? = null)

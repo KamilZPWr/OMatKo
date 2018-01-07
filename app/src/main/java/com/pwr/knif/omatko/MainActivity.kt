@@ -17,7 +17,7 @@ import android.view.View
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
 
-    override fun toString(): String = "day_of_week_${ this.name.toLowerCase() }"
+    //override fun toString(): String = "day_of_week_${ this.name.toLowerCase() }"
 
     fun getResourceString(res: Resources): String {
         val id = res.getIdentifier(this.toString(), "string", this::class.java.`package`.name)
@@ -40,10 +40,9 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         setContentView(R.layout.activity_main)
-
         setSupportActionBar(toolbar)
-
         setupNavigatorDrawer()
 
         val bundles = Array(2) { Bundle() }
@@ -57,7 +56,9 @@ class MainActivity :
         val databaseManager = DatabaseManager(this)
         databaseManager.databaseConnection()
 
-        // TEST
+        //TODO("Make class to get data from FB and update them in roomDB")
+
+        // DB test
         val timeStart = java.util.Calendar.getInstance().apply {
             set(2017,11,20,20,0)
         }
@@ -65,14 +66,12 @@ class MainActivity :
             set(2017,11,20,21,0)
         }
 
-        //TODO("Make class to get data from FB and update them in roomDB")
-
-        val list = listOf(Event("eventId","Dzień ","Rodzaj ",
+        val list = listOf(Event("eventId","Dzień ","Rodzaj ","miejsce",
                 "Krótki opis"
                 , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
-                timeStart.timeInMillis, timeEnd.timeInMillis,"test","test"))
+                timeStart.timeInMillis, timeEnd.timeInMillis,"THEORETICAL","SATURDAY"))
 
-        DatabaseManager.AddDataToDatabase().execute(*list.toTypedArray())
+        DatabaseManager.AddEvents().execute(*list.toTypedArray())
 
     }
 
