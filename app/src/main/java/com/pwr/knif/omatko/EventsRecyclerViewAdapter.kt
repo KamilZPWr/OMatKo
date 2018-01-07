@@ -141,6 +141,11 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                 val eventUri: Uri = calendarCursor.insert(CalendarContract.Events.CONTENT_URI, values)
                 val eventID = (eventUri.lastPathSegment).toLong()
 
+                event.isChecked = true
+                event.eventCalendarID = eventID
+
+
+                DatabaseManager.UpdateEvent().execute(event)
                 addReminder(eventID,calendarCursor)
                 Toast.makeText(context,"Dodałeś do kalendarza ${event.title}",Toast.LENGTH_LONG).show()
 
@@ -152,10 +157,10 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
             activity.contentResolver.delete(deleteUri, null, null)
             Toast.makeText(context,"Usunąłeś z kalendarza ${event.title}",Toast.LENGTH_LONG).show()
 
-        }
+            event.isChecked = false
+            event.eventCalendarID = null
+            DatabaseManager.UpdateEvent().execute(event)
 
-        override fun toString(): String {
-            return super.toString()
         }
     }
 

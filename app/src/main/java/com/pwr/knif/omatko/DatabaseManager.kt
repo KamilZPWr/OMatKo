@@ -27,7 +27,15 @@ class DatabaseManager(private var context : Context){
     class DeleteEvents : AsyncTask<Event, Void, Boolean>(){
 
         override fun doInBackground(vararg params: Event?): Boolean {
-            database.eventDao().deleteEvent(params.toList())
+            database.eventDao().deleteEvents(params.toList())
+            return true
+        }
+    }
+
+    class UpdateEvent : AsyncTask<Event, Void,Boolean>(){
+
+        override fun doInBackground(vararg params: Event?): Boolean {
+            database.eventDao().updateEvent(params[0]!!)
             return true
         }
     }

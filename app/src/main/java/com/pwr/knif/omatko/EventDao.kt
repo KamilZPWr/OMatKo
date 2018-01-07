@@ -15,6 +15,9 @@ interface EventDao {
     fun insertEvents(events : List<Event?>)
 
     @Delete()
-    fun deleteEvent(events : List<Event?>)
+    fun deleteEvents(events : List<Event?>)
+
+    @Update()
+    fun updateEvent(events : Event?)
 
 }

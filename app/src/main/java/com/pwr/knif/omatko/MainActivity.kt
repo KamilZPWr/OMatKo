@@ -40,7 +40,7 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setupNavigatorDrawer()
@@ -66,12 +66,12 @@ class MainActivity :
             set(2017,11,20,21,0)
         }
 
-        val list = listOf(Event("eventId","Dzień ","Rodzaj ","miejsce",
+        val list = listOf(Event("eventId","Tytuł wykładu 2","Rodzaj ","miejsce",
                 "Krótki opis"
                 , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
                 timeStart.timeInMillis, timeEnd.timeInMillis,"THEORETICAL","SATURDAY"))
 
-        DatabaseManager.AddEvents().execute(*list.toTypedArray())
+        //DatabaseManager.UpdateEvent().execute(*list.toTypedArray())
 
     }
 

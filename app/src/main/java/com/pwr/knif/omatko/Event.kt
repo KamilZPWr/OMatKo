@@ -12,7 +12,7 @@ data class Event(
         val eventId:String,
 
         @ColumnInfo(name = "title")
-        val title:String,
+        var title:String,
 
         @ColumnInfo(name = "presenter")
         val presenter:String,
