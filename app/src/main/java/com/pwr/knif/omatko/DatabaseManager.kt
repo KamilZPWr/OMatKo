@@ -2,45 +2,35 @@ package com.pwr.knif.omatko
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import android.os.AsyncTask
 import com.pwr.knif.omatko.EventsFragment.Companion.database
 
 
-class DatabaseManager(private var context : Context){
+object DatabaseManager {
 
-    class GetEvents : AsyncTask<String, Void, List<Event>>() {
-
-        override fun doInBackground(vararg params: String?): List<Event> {
-            return database.eventDao().getEventsBasedOnDayAndType(params[0]!!,params[1]!!)
-        }
-
+    fun getEvents(day: String, type: String): List<Event> {
+        return database.eventDao().getEventsBasedOnDayAndType(day, type)
     }
 
-    class AddEvents : AsyncTask<Event, Void, Boolean>() {
-
-        override fun doInBackground(vararg params: Event?): Boolean {
-            database.eventDao().insertEvents(params.toList())
-            return true
-        }
+    fun addEvents(events: List<Event?>): Boolean {
+        database.eventDao().insertEvents(events)
+        return true
     }
 
-    class DeleteEvents : AsyncTask<Event, Void, Boolean>(){
-
-        override fun doInBackground(vararg params: Event?): Boolean {
-            database.eventDao().deleteEvents(params.toList())
-            return true
-        }
+    fun updateEvent(event: Event?): Boolean {
+        database.eventDao().updateEvent(event)
+        return true
     }
 
-    class UpdateEvent : AsyncTask<Event, Void,Boolean>(){
-
-        override fun doInBackground(vararg params: Event?): Boolean {
-            database.eventDao().updateEvent(params[0]!!)
-            return true
-        }
+    fun deleteEvents(events: List<Event?>): Boolean {
+        database.eventDao().deleteEvents(events)
+        return true
     }
 
-    fun databaseConnection() {
+    fun nukeDatabase() {
+        database.eventDao().nukeDatabase()
+    }
+
+    fun databaseConnection(context: Context) {
         database = Room.databaseBuilder(context, Database::class.java, "appDatabase").build()
     }
 }

@@ -19,8 +19,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
+import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.doAsync
 
-class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context, val activity:Activity) :
+class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context, val activity: Activity) :
         RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,17 +37,16 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
         holder.fill(event)
         holder.eventView.setOnLongClickListener {
 
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR)!=
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) !=
                     PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CALENDAR),123)
-            }
-            else {
+                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CALENDAR), 123)
+            } else {
                 event.isChecked = !event.isChecked
 
-                if (event.eventCalendarID==null) {
+                if (event.eventCalendarID == null) {
                     holder.addEventToCalendar(context, activity, event)
-                }else{
-                    holder.deleteEventInCalendar(context,activity,event)
+                } else {
+                    holder.deleteEventInCalendar(context, activity, event)
                 }
                 holder.update()
             }
@@ -95,7 +96,7 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
         @SuppressLint("MissingPermission")
         fun addEventToCalendar(context: Context, activity: Activity, event: Event) {
 
-            fun findPhoneCalendar():Long{
+            fun findPhoneCalendar(): Long {
 
                 val eventProjection = arrayOf(CalendarContract.Calendars._ID)
                 val projectionIdIndex = 0
@@ -116,7 +117,7 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                 return calID!!
             }
 
-            fun addReminder(eventID:Long,calendarCursor:ContentResolver ){
+            fun addReminder(eventID: Long, calendarCursor: ContentResolver) {
 
                 val values = ContentValues()
 
@@ -127,42 +128,38 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                 event.eventCalendarID = eventID
             }
 
-                val calendarID = findPhoneCalendar()
-                val calendarCursor = activity.contentResolver
-                val values = ContentValues()
+            val calendarID = findPhoneCalendar()
+            val calendarCursor = activity.contentResolver
+            val values = ContentValues()
 
-                values.put(CalendarContract.Events.DTSTART, event.beginTime)
-                values.put(CalendarContract.Events.DTEND, event.endTime)
-                values.put(CalendarContract.Events.TITLE, event.title)
-                values.put(CalendarContract.Events.DESCRIPTION, event.shortDescription)
-                values.put(CalendarContract.Events.CALENDAR_ID, calendarID)
-                values.put(CalendarContract.Events.EVENT_TIMEZONE, "Central European Time")
+            values.put(CalendarContract.Events.DTSTART, event.beginTime)
+            values.put(CalendarContract.Events.DTEND, event.endTime)
+            values.put(CalendarContract.Events.TITLE, event.title)
+            values.put(CalendarContract.Events.DESCRIPTION, event.shortDescription)
+            values.put(CalendarContract.Events.CALENDAR_ID, calendarID)
+            values.put(CalendarContract.Events.EVENT_TIMEZONE, "Central European Time")
 
-                val eventUri: Uri = calendarCursor.insert(CalendarContract.Events.CONTENT_URI, values)
-                val eventID = (eventUri.lastPathSegment).toLong()
+            val eventUri: Uri = calendarCursor.insert(CalendarContract.Events.CONTENT_URI, values)
+            val eventID = eventUri.lastPathSegment.toLong()
 
-                event.isChecked = true
-                event.eventCalendarID = eventID
+            event.isChecked = true
+            event.eventCalendarID = eventID
 
-
-                DatabaseManager.UpdateEvent().execute(event)
-                addReminder(eventID,calendarCursor)
-                Toast.makeText(context,"Dodałeś do kalendarza ${event.title}",Toast.LENGTH_LONG).show()
+            doAsync { DatabaseManager.updateEvent(event) }
+            addReminder(eventID, calendarCursor)
+            Toast.makeText(context, "Dodałeś do kalendarza ${event.title}", Toast.LENGTH_LONG).show()
 
         }
 
-        fun deleteEventInCalendar(context: Context,activity: Activity,event: Event){
+        fun deleteEventInCalendar(context: Context, activity: Activity, event: Event) {
 
-            val deleteUri:Uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, event.eventCalendarID!!)
+            val deleteUri: Uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, event.eventCalendarID!!)
             activity.contentResolver.delete(deleteUri, null, null)
-            Toast.makeText(context,"Usunąłeś z kalendarza ${event.title}",Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Usunąłeś z kalendarza ${event.title}", Toast.LENGTH_LONG).show()
 
             event.isChecked = false
             event.eventCalendarID = null
-            DatabaseManager.UpdateEvent().execute(event)
-
+            doAsync { DatabaseManager.updateEvent(event) }
         }
     }
-
-
 }

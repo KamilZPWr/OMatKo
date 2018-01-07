@@ -20,4 +20,6 @@ interface EventDao {
     @Update()
     fun updateEvent(events : Event?)
 
+    @Query("DELETE FROM events")
+    fun nukeDatabase()
 }

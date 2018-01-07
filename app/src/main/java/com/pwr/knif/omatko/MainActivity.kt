@@ -13,6 +13,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
 import android.view.View
+import org.jetbrains.anko.doAsync
 
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
@@ -53,11 +54,14 @@ class MainActivity :
 
         swapManager.changeFragments(scheduleFragments[0], false)
 
-        val databaseManager = DatabaseManager(this)
-        databaseManager.databaseConnection()
+        DatabaseManager.databaseConnection(this)
 
         //TODO("Make class to get data from FB and update them in roomDB")
 
+        doAsync { DatabaseManager.addEvents(testEvents()) }.get()
+    }
+
+    fun testEvents(): List<Event> {
         // DB test
         val timeStart = java.util.Calendar.getInstance().apply {
             set(2017,11,20,20,0)
@@ -66,13 +70,15 @@ class MainActivity :
             set(2017,11,20,21,0)
         }
 
-        val list = listOf(Event("eventId","Tytuł wykładu 2","Rodzaj ","miejsce",
-                "Krótki opis"
-                , "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
-                timeStart.timeInMillis, timeEnd.timeInMillis,"THEORETICAL","SATURDAY"))
-
-        //DatabaseManager.UpdateEvent().execute(*list.toTypedArray())
-
+        val exampleEvent = Event("eventId","Tytuł wykładu 1","Rodzaj ","miejsce",
+                "Krótki opis",
+                "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
+                timeStart.timeInMillis, timeEnd.timeInMillis,"THEORETICAL","SATURDAY")
+        return listOf(
+                exampleEvent.copy(eventId = "event1", title = "Tytuł Wykłady Sob/1"),
+                exampleEvent.copy(eventId = "event2", title = "Tytuł Wykładu Sob/2"),
+                exampleEvent.copy(eventId = "event3", day = "SUNDAY", title = "Tytuł Wykłady Niedz/1"),
+                exampleEvent.copy(eventId = "event4", day = "SUNDAY", title = "Tytuł Wykładu Niedz/2"))
     }
 
     override fun onBackPressed() {
@@ -99,10 +105,14 @@ class MainActivity :
             }
 
             R.id.nav_fb ->{
+                // delete database for testing
+                doAsync { DatabaseManager.nukeDatabase() }
                 return true
             }
 
             R.id.nav_snap ->{
+                // repopulate database with test data
+                doAsync { DatabaseManager.addEvents(testEvents()) }
                 return true
             }
 

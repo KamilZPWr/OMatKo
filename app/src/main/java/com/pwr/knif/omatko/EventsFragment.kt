@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.jetbrains.anko.doAsyncResult
 
 class EventsFragment : Fragment() {
 
@@ -30,7 +31,7 @@ class EventsFragment : Fragment() {
         if (view is RecyclerView) {
             val context = view.context
             view.layoutManager = LinearLayoutManager(context)
-            val eventsList = DatabaseManager.GetEvents().execute(dayAndType[0], dayAndType[1]).get()
+            val eventsList = doAsyncResult { DatabaseManager.getEvents(dayAndType[0], dayAndType[1]) }.get()
             view.adapter = EventsRecyclerViewAdapter(eventsList,context,activity)
         }
         return view
