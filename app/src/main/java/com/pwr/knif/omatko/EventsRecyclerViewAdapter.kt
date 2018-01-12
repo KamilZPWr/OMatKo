@@ -21,6 +21,12 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 import org.jetbrains.anko.custom.async
 import org.jetbrains.anko.doAsync
+import android.support.v4.content.ContextCompat.startActivity
+import android.content.Intent
+import android.provider.CalendarContract.Events
+import java.lang.ref.WeakReference
+import java.util.*
+
 
 class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context, val activity: Activity) :
         RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
@@ -41,7 +47,7 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                     PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CALENDAR), 123)
             } else {
-                event.isChecked = !event.isChecked
+                //event.isChecked = !event.isChecked
 
                 if (event.eventCalendarID == null) {
                     holder.addEventToCalendar(context, activity, event)
@@ -128,27 +134,64 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                 event.eventCalendarID = eventID
             }
 
-            val calendarID = findPhoneCalendar()
-            val calendarCursor = activity.contentResolver
-            val values = ContentValues()
+            //val calendarID = findPhoneCalendar()
+            //val calendarCursor = activity.contentResolver
+            //val values = ContentValues()
 
-            values.put(CalendarContract.Events.DTSTART, event.beginTime)
-            values.put(CalendarContract.Events.DTEND, event.endTime)
-            values.put(CalendarContract.Events.TITLE, event.title)
-            values.put(CalendarContract.Events.DESCRIPTION, event.shortDescription)
-            values.put(CalendarContract.Events.CALENDAR_ID, calendarID)
-            values.put(CalendarContract.Events.EVENT_TIMEZONE, "Central European Time")
+            //values.put(CalendarContract.Events.DTSTART, event.beginTime)
+            //values.put(CalendarContract.Events.DTEND, event.endTime)
+            //values.put(CalendarContract.Events.TITLE, event.title)
+            //values.put(CalendarContract.Events.DESCRIPTION, event.shortDescription)
+            //values.put(CalendarContract.Events.CALENDAR_ID, calendarID)
+            //values.put(CalendarContract.Events.EVENT_TIMEZONE, "Central European Time")
 
-            val eventUri: Uri = calendarCursor.insert(CalendarContract.Events.CONTENT_URI, values)
-            val eventID = eventUri.lastPathSegment.toLong()
+            //val eventUri: Uri = calendarCursor.insert(CalendarContract.Events.CONTENT_URI, values)
+            //val eventID = eventUri.lastPathSegment.toLong()
 
-            event.isChecked = true
-            event.eventCalendarID = eventID
 
-            doAsync { DatabaseManager.updateEvent(event) }
-            addReminder(eventID, calendarCursor)
-            Toast.makeText(context, "Dodałeś do kalendarza ${event.title}", Toast.LENGTH_LONG).show()
+            val eventId = getNewEventId(activity.contentResolver);
+            val intent = Intent(Intent.ACTION_INSERT)
+                    .setData(Events.CONTENT_URI)
+                    .putExtra(Events._ID, eventId)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.beginTime)
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.endTime)
+                    .putExtra(Events.TITLE, event.title)
+                    .putExtra(Events.DESCRIPTION, event.shortDescription)
+                    .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY)
+                    .putExtra(Events.EVENT_TIMEZONE, "Central European Time")
+            activity.startActivity(intent)
 
+            if(activity is MainActivity) {
+                activity.temporaryHolder = WeakReference(this)
+                activity.temporaryId = eventId
+                activity.temporaryEvent = event
+            }
+
+
+            //event.isChecked = true
+            //event.eventCalendarID = eventId
+
+            //delegated to MainActivity.onStart()
+            //doAsync { DatabaseManager.updateEvent(event) }
+            //addReminder(eventID, calendarCursor)
+            //Toast.makeText(context, "Dodałeś do kalendarza ${event.title}", Toast.LENGTH_LONG).show()
+
+        }
+        companion object {
+            @SuppressLint("MissingPermission")
+            fun getNewEventId(cr: ContentResolver): Long {
+                with(cr.query(
+                        Events.CONTENT_URI,
+                        arrayOf("MAX(${Events._ID}) as max_id"),
+                        null,
+                        null,
+                        Events._ID)) {
+                    moveToFirst()
+                    val maxVal = getLong(getColumnIndex("max_id"))
+                    close()
+                    return maxVal + 5
+                }
+            }
         }
 
         fun deleteEventInCalendar(context: Context, activity: Activity, event: Event) {
