@@ -189,7 +189,7 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                     moveToFirst()
                     val maxVal = getLong(getColumnIndex("max_id"))
                     close()
-                    return maxVal + 5
+                    return maxVal + 1
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.pwr.knif.omatko
 
+import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.res.Resources
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -18,6 +20,8 @@ import java.lang.ref.WeakReference
 import android.provider.CalendarContract.Instances
 import android.content.ContentUris
 import android.database.Cursor
+import android.provider.CalendarContract
+import android.util.Log
 
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
@@ -89,113 +93,33 @@ class MainActivity :
     var temporaryId: Long? = null
     var temporaryEvent: Event? = null
 
-    fun chuj(event: Event, id: Long) {
-        val INSTANCE_PROJECTION = arrayOf(
-                Instances.EVENT_ID, // 0
-                Instances.BEGIN,    // 1
-                Instances.TITLE     // 2
-        )
-        // The indices for the projection array above.
-        val PROJECTION_ID_INDEX = 0
-        val PROJECTION_BEGIN_INDEX = 1
-        val PROJECTION_TITLE_INDEX = 2
-
-        var cur: Cursor? = null
-        val cr = contentResolver
-
-        // The ID of the recurring event whose instances you are searching
-        // for in the Instances table
-        val selection = Instances.EVENT_ID + " = ?"
-        val selectionArgs = arrayOf(id.toString())
-
-        // Construct the query with the desired date range.
-        val builder = Instances.CONTENT_URI.buildUpon()
-        ContentUris.appendId(builder, event.beginTime)
-        ContentUris.appendId(builder, event.endTime)
-
-        // Submit the query
-        cur = cr.query(builder.build(),
-                INSTANCE_PROJECTION,
-                selection,
-                selectionArgs,
-                null)
-        if(cur.moveToNext()) {
-            var title: String? = null
-            var eventID: Long = 0
-            var beginVal: Long = 0
-
-            // Get the field values
-            eventID = cur.getLong(PROJECTION_ID_INDEX)
-            beginVal = cur.getLong(PROJECTION_BEGIN_INDEX)
-            title = cur.getString(PROJECTION_TITLE_INDEX)
-
-            // Do something with the values.
-            //Log.i(DEBUG_TAG, "Event:  " + title!!)
-            //val calendar = Calendar.getInstance()
-            //calendar.setTimeInMillis(beginVal)
-            //val formatter = SimpleDateFormat("MM/dd/yyyy")
-            //Log.i(DEBUG_TAG, "Date: " + formatter.format(calendar.getTime()))
+    @SuppressLint("MissingPermission")
+    fun getCurrentEventId(cr: ContentResolver): Long {
+        with(cr.query(
+                CalendarContract.Events.CONTENT_URI,
+                arrayOf("MAX(${CalendarContract.Events._ID}) as max_id"),
+                null,
+                null,
+                CalendarContract.Events._ID)) {
+            moveToFirst()
+            val maxVal = getLong(getColumnIndex("max_id"))
+            close()
+            return maxVal
         }
-        cur.close()
     }
 
     override fun onStart() {
         val id = temporaryId
         val event = temporaryEvent
 
-        if(id != null && event != null) {
-            val INSTANCE_PROJECTION = arrayOf(
-                    Instances.EVENT_ID, // 0
-                    Instances.BEGIN,    // 1
-                    Instances.TITLE     // 2
-            )
-            // The indices for the projection array above.
-            val PROJECTION_ID_INDEX = 0
-            val PROJECTION_BEGIN_INDEX = 1
-            val PROJECTION_TITLE_INDEX = 2
+        val currentLastId = getCurrentEventId(contentResolver)
 
-            var cur: Cursor? = null
-            val cr = contentResolver
+        if(currentLastId >= id ?: Long.MAX_VALUE && event != null) {
 
-            // The ID of the recurring event whose instances you are searching
-            // for in the Instances table
-            val selection = Instances.EVENT_ID + " = ?"
-            val selectionArgs = arrayOf(id.toString())
+            event.isChecked = true
+            event.eventCalendarID = currentLastId
+            doAsync { DatabaseManager.updateEvent(event) }
 
-            // Construct the query with the desired date range.
-            val builder = Instances.CONTENT_URI.buildUpon()
-            ContentUris.appendId(builder, event.beginTime)
-            ContentUris.appendId(builder, event.endTime)
-
-            // Submit the query
-            cur = cr.query(builder.build(),
-                    INSTANCE_PROJECTION,
-                    selection,
-                    selectionArgs,
-                    null)
-            if(cur.moveToNext()) {
-                var title: String? = null
-                var eventID: Long = 0
-                var beginVal: Long = 0
-
-                // Get the field values
-                eventID = cur.getLong(PROJECTION_ID_INDEX)
-                beginVal = cur.getLong(PROJECTION_BEGIN_INDEX)
-                title = cur.getString(PROJECTION_TITLE_INDEX)
-
-                // Do something with the values.
-                //Log.i(DEBUG_TAG, "Event:  " + title!!)
-                //val calendar = Calendar.getInstance()
-                //calendar.setTimeInMillis(beginVal)
-                //val formatter = SimpleDateFormat("MM/dd/yyyy")
-                //Log.i(DEBUG_TAG, "Date: " + formatter.format(calendar.getTime()))
-                if(title == event.title) {
-                    event.isChecked = true
-                    event.eventCalendarID = id
-                    doAsync { DatabaseManager.updateEvent(event) }
-                }
-            }
-            cur.close()
             temporaryHolder?.get()?.update()
         }
         temporaryHolder = null
