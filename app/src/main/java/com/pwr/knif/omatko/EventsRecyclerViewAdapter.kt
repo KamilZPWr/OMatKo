@@ -5,10 +5,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.ContentUris
-import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.provider.CalendarContract
 import android.support.v4.app.ActivityCompat
@@ -19,17 +17,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
-import org.jetbrains.anko.custom.async
 import org.jetbrains.anko.doAsync
-import android.support.v4.content.ContextCompat.startActivity
 import android.content.Intent
 import android.provider.CalendarContract.Events
 import java.lang.ref.WeakReference
-import java.util.*
 
-
-class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context, val activity: Activity) :
-        RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
+class EventsRecyclerViewAdapter(
+        private val eventList: List<Event>,
+        private val context: Context,
+        private val activity: Activity
+) : RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -47,12 +44,11 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                     PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CALENDAR), 123)
             } else {
-                //event.isChecked = !event.isChecked
 
                 if (event.eventCalendarID == null) {
-                    holder.addEventToCalendar(context, activity, event)
+                    addEventToCalendar(activity, event, holder)
                 } else {
-                    holder.deleteEventInCalendar(context, activity, event)
+                    deleteEventInCalendar(context, activity, event)
                 }
                 holder.update()
             }
@@ -69,14 +65,14 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
     override fun getItemCount() = eventList.size
 
     class ViewHolder(var eventView: View) : RecyclerView.ViewHolder(eventView) {
-        var event: Event? = null
+        private var event: Event? = null
 
         fun fill(event: Event) {
             this.event = event
 
             eventView.apply {
-                tv_event_title.setText(event.title)
-                tv_event_presenter.setText(event.presenter)
+                tv_event_title.text = event.title
+                tv_event_presenter.text = event.presenter
             }
             update()
         }
@@ -91,65 +87,19 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                             R.drawable.background_not_ticked_event)
 
                 tv_event_description.text =
-                        if (event.showLongDescription) {
+                        if (event.showLongDescription)
                             event.longDescription
-                        } else {
+                        else
                             event.shortDescription
-                        }
             }
         }
+    }
 
-        @SuppressLint("MissingPermission")
-        fun addEventToCalendar(context: Context, activity: Activity, event: Event) {
+    companion object {
 
-            fun findPhoneCalendar(): Long {
+        fun addEventToCalendar(activity: Activity, event: Event, holder: ViewHolder? = null) {
 
-                val eventProjection = arrayOf(CalendarContract.Calendars._ID)
-                val projectionIdIndex = 0
-                var calID: Long? = null
-                val queryCursor: Cursor
-                val contentResolver = activity.contentResolver
-                val uri = CalendarContract.Calendars.CONTENT_URI
-                val selection: String = "(" + CalendarContract.Calendars.ACCOUNT_NAME + " = ? )"
-                val selectionArgs = arrayOf("Phone")
-
-                queryCursor = contentResolver.query(uri, eventProjection, selection, selectionArgs, null)
-
-                while (queryCursor.moveToNext()) {
-                    calID = queryCursor.getLong(projectionIdIndex)
-                }
-
-                queryCursor.close()
-                return calID!!
-            }
-
-            fun addReminder(eventID: Long, calendarCursor: ContentResolver) {
-
-                val values = ContentValues()
-
-                values.put(CalendarContract.Reminders.MINUTES, 5)
-                values.put(CalendarContract.Reminders.EVENT_ID, eventID)
-                values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
-                calendarCursor.insert(CalendarContract.Reminders.CONTENT_URI, values)
-                event.eventCalendarID = eventID
-            }
-
-            //val calendarID = findPhoneCalendar()
-            //val calendarCursor = activity.contentResolver
-            //val values = ContentValues()
-
-            //values.put(CalendarContract.Events.DTSTART, event.beginTime)
-            //values.put(CalendarContract.Events.DTEND, event.endTime)
-            //values.put(CalendarContract.Events.TITLE, event.title)
-            //values.put(CalendarContract.Events.DESCRIPTION, event.shortDescription)
-            //values.put(CalendarContract.Events.CALENDAR_ID, calendarID)
-            //values.put(CalendarContract.Events.EVENT_TIMEZONE, "Central European Time")
-
-            //val eventUri: Uri = calendarCursor.insert(CalendarContract.Events.CONTENT_URI, values)
-            //val eventID = eventUri.lastPathSegment.toLong()
-
-
-            val eventId = getNewEventId(activity.contentResolver);
+            val eventId = getNewEventId(activity.contentResolver)
             val intent = Intent(Intent.ACTION_INSERT)
                     .setData(Events.CONTENT_URI)
                     .putExtra(Events._ID, eventId)
@@ -161,36 +111,25 @@ class EventsRecyclerViewAdapter(val eventList: List<Event>, val context: Context
                     .putExtra(Events.EVENT_TIMEZONE, "Central European Time")
             activity.startActivity(intent)
 
-            if(activity is MainActivity) {
-                activity.temporaryHolder = WeakReference(this)
+            if (activity is MainActivity) {
+                if(holder != null) activity.temporaryHolder = WeakReference(holder)
                 activity.temporaryId = eventId
                 activity.temporaryEvent = event
             }
-
-
-            //event.isChecked = true
-            //event.eventCalendarID = eventId
-
-            //delegated to MainActivity.onStart()
-            //doAsync { DatabaseManager.updateEvent(event) }
-            //addReminder(eventID, calendarCursor)
-            //Toast.makeText(context, "Dodałeś do kalendarza ${event.title}", Toast.LENGTH_LONG).show()
-
         }
-        companion object {
-            @SuppressLint("MissingPermission")
-            fun getNewEventId(cr: ContentResolver): Long {
-                with(cr.query(
-                        Events.CONTENT_URI,
-                        arrayOf("MAX(${Events._ID}) as max_id"),
-                        null,
-                        null,
-                        Events._ID)) {
-                    moveToFirst()
-                    val maxVal = getLong(getColumnIndex("max_id"))
-                    close()
-                    return maxVal + 1
-                }
+
+        @SuppressLint("MissingPermission")
+        private fun getNewEventId(cr: ContentResolver): Long {
+            with(cr.query(
+                    Events.CONTENT_URI,
+                    arrayOf("MAX(${Events._ID}) as max_id"),
+                    null,
+                    null,
+                    Events._ID)) {
+                moveToFirst()
+                val maxVal = getLong(getColumnIndex("max_id"))
+                close()
+                return maxVal + 1
             }
         }
 

@@ -4,7 +4,6 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.pwr.knif.omatko.EventsFragment.Companion.database
 
-
 object DatabaseManager {
 
     fun getEvents(day: String, type: String): List<Event> {

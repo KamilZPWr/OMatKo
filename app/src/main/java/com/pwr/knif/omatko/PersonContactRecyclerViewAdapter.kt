@@ -1,24 +1,17 @@
 package com.pwr.knif.omatko
 
 import android.support.v7.widget.RecyclerView
-import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-
-import com.pwr.knif.omatko.PersonContactFragment.OnPersonContactListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_personcontact.view.*
+import com.pwr.knif.omatko.PersonContactFragment.OnPersonContactListFragmentInteractionListener
 
-/**
- * [RecyclerView.Adapter] that can display a [PersonContact] and makes a call to the
- * specified [OnPersonContactListFragmentInteractionListener].
- */
 class PersonContactRecyclerViewAdapter(
-        val contactsList: List<PersonContact>,
-        val listener: OnPersonContactListFragmentInteractionListener?
+        private val contactsList: List<PersonContact>,
+        private val listener: OnPersonContactListFragmentInteractionListener?
 ) : RecyclerView.Adapter<PersonContactRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +22,7 @@ class PersonContactRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contact = contactsList[position]
-        
+
         holder.fill(contact)
 
         holder.contactView.setOnClickListener {
@@ -41,7 +34,7 @@ class PersonContactRecyclerViewAdapter(
 
     class ViewHolder(var contactView: View) : RecyclerView.ViewHolder(contactView) {
         var personContact: PersonContact? = null
-        
+
         fun fill(contact: PersonContact) {
             personContact = contact
             contactView.apply {

@@ -2,7 +2,6 @@ package com.pwr.knif.omatko
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
-import android.content.res.Resources
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -17,22 +16,10 @@ import kotlinx.android.synthetic.main.layout_main.*
 import android.view.View
 import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference
-import android.provider.CalendarContract.Instances
-import android.content.ContentUris
-import android.database.Cursor
 import android.provider.CalendarContract
-import android.util.Log
 
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
-
-    //override fun toString(): String = "day_of_week_${ this.name.toLowerCase() }"
-
-    fun getResourceString(res: Resources): String {
-        val id = res.getIdentifier(this.toString(), "string", this::class.java.`package`.name)
-
-        return res.getString(id)
-    }
 }
 
 class MainActivity :
@@ -40,8 +27,8 @@ class MainActivity :
         NavigationView.OnNavigationItemSelectedListener,
         PersonContactFragment.OnPersonContactListFragmentInteractionListener {
 
-    lateinit var scheduleFragments: List<Fragment>
-    val swapManager = SwapManager(this)
+    private lateinit var scheduleFragments: List<Fragment>
+    private val swapManager = SwapManager(this)
 
     override fun onListFragmentInteraction(item: PersonContact) {
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
@@ -69,19 +56,19 @@ class MainActivity :
         doAsync { DatabaseManager.addEvents(testEvents()) }.get()
     }
 
-    fun testEvents(): List<Event> {
+    private fun testEvents(): List<Event> {
         // DB test
         val timeStart = java.util.Calendar.getInstance().apply {
-            set(2018,3,20,20,0)
+            set(2018, 3, 20, 20, 0)
         }
         val timeEnd = java.util.Calendar.getInstance().apply {
-            set(2018,3,20,21,0)
+            set(2018, 3, 20, 21, 0)
         }
 
-        val exampleEvent = Event("eventId","Tytuł wykładu 1","Rodzaj ","miejsce",
+        val exampleEvent = Event("eventId", "Tytuł wykładu 1", "Rodzaj ", "miejsce",
                 "Krótki opis",
                 "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
-                timeStart.timeInMillis, timeEnd.timeInMillis,"THEORETICAL","SATURDAY")
+                timeStart.timeInMillis, timeEnd.timeInMillis, "THEORETICAL", "SATURDAY")
         return listOf(
                 exampleEvent.copy(eventId = "event1", title = "Tytuł Wykłady Sob/1"),
                 exampleEvent.copy(eventId = "event2", title = "Tytuł Wykładu Sob/2"),
@@ -94,7 +81,7 @@ class MainActivity :
     var temporaryEvent: Event? = null
 
     @SuppressLint("MissingPermission")
-    fun getCurrentEventId(cr: ContentResolver): Long {
+    private fun getCurrentEventId(cr: ContentResolver): Long {
         with(cr.query(
                 CalendarContract.Events.CONTENT_URI,
                 arrayOf("MAX(${CalendarContract.Events._ID}) as max_id"),
@@ -114,7 +101,7 @@ class MainActivity :
 
         val currentLastId = getCurrentEventId(contentResolver)
 
-        if(currentLastId >= id ?: Long.MAX_VALUE && event != null) {
+        if (currentLastId >= id ?: Long.MAX_VALUE && event != null) {
 
             event.isChecked = true
             event.eventCalendarID = currentLastId
@@ -151,13 +138,13 @@ class MainActivity :
                 return true
             }
 
-            R.id.nav_fb ->{
+            R.id.nav_fb -> {
                 // delete database for testing
                 doAsync { DatabaseManager.nukeDatabase() }
                 return true
             }
 
-            R.id.nav_snap ->{
+            R.id.nav_snap -> {
                 // repopulate database with test data
                 doAsync { DatabaseManager.addEvents(testEvents()) }
                 return true
@@ -174,11 +161,11 @@ class MainActivity :
 
         when (item.itemId) {
             R.id.nav_schedule_theoretical -> {
-                swapManager.changeFragments(scheduleFragments[0],false)
+                swapManager.changeFragments(scheduleFragments[0], false)
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_schedule_popular_science -> {
-                swapManager.changeFragments(scheduleFragments[1],false)
+                swapManager.changeFragments(scheduleFragments[1], false)
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_assessment -> {
@@ -194,7 +181,7 @@ class MainActivity :
 
             }
             R.id.nav_contact -> {
-                swapManager.changeFragments(PersonContactFragment(),false)
+                swapManager.changeFragments(PersonContactFragment(), false)
                 tab_layout.visibility = View.GONE
             }
         }
@@ -203,7 +190,7 @@ class MainActivity :
         return true
     }
 
-    fun setupNavigatorDrawer() {
+    private fun setupNavigatorDrawer() {
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)

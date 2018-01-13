@@ -12,12 +12,11 @@ import org.jetbrains.anko.doAsyncResult
 class EventsFragment : Fragment() {
 
     companion object {
-        @JvmStatic
-        val DAY_AND_TYPE = "DAY_AND_TYPE"
-        lateinit var database : Database
+        const val DAY_AND_TYPE = "DAY_AND_TYPE"
+        lateinit var database: Database
     }
 
-    lateinit var dayAndType: Array<String>
+    private lateinit var dayAndType: Array<String>
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -32,8 +31,9 @@ class EventsFragment : Fragment() {
             val context = view.context
             view.layoutManager = LinearLayoutManager(context)
             val eventsList = doAsyncResult { DatabaseManager.getEvents(dayAndType[0], dayAndType[1]) }.get()
-            view.adapter = EventsRecyclerViewAdapter(eventsList,context,activity)
+            view.adapter = EventsRecyclerViewAdapter(eventsList, context, activity)
         }
+
         return view
     }
 }

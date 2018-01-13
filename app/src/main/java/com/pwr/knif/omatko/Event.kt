@@ -9,22 +9,22 @@ data class Event(
 
         @PrimaryKey
         @ColumnInfo(name = "eventId")
-        val eventId:String,
+        val eventId: String,
 
         @ColumnInfo(name = "title")
-        var title:String,
+        var title: String,
 
         @ColumnInfo(name = "presenter")
-        val presenter:String,
+        val presenter: String,
 
         @ColumnInfo(name = "place")
-        val place:String,
+        val place: String,
 
         @ColumnInfo(name = "shortDescription")
-        val shortDescription:String,
+        val shortDescription: String,
 
         @ColumnInfo(name = "longDescription")
-        val longDescription:String,
+        val longDescription: String,
 
         @ColumnInfo(name = "beginTime")
         val beginTime: Long,
@@ -39,10 +39,11 @@ data class Event(
         val day: String,
 
         @ColumnInfo(name = "isChecked")
-        var isChecked:Boolean = false,
+        var isChecked: Boolean = false,
 
         @ColumnInfo(name = "showLongDescription")
-        var showLongDescription:Boolean = false,
+        var showLongDescription: Boolean = false,
 
         @ColumnInfo(name = "eventCalendarID")
-        var eventCalendarID:Long? = null)
+        var eventCalendarID: Long? = null
+)

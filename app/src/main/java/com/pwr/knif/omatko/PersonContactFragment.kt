@@ -9,52 +9,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * A fragment representing a list of Items.
- *
- *
- * Activities containing this fragment MUST implement the [PersonContactFragment.OnPersonContactListFragmentInteractionListener]
- * interface.
- */
 class PersonContactFragment : Fragment() {
-/**
- * Mandatory empty constructor for the fragment manager to instantiate the
- * fragment (e.g. upon screen orientation changes).
- */
 
     private var listener: OnPersonContactListFragmentInteractionListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_personcontact_list, container, false)
 
-        // Set the adapter
         if (view is RecyclerView) {
             val context = view.context
             view.layoutManager = LinearLayoutManager(context)
 
             //TODO: get real data
             val list = listOf(
-                    PersonContact("Kamil Zawistowski","Programista",
-                            "+48 668-213-793","zawistowski96kamil@gmail.com",
+                    PersonContact("Kamil Zawistowski", "Programista",
+                            "+48 668-213-793", "zawistowski96kamil@gmail.com",
                             "Jestem studentem III roku Matematyki Stosowanej na Politechnice Wrocławskiej. " +
-                                    "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
-                    PersonContact("Jakub Dąbek","Programista",
-                            "+48 782-592-297","jakub.dabek@gmail.com",
+                                    "Wszystkich zainteresowanych zapraszam do kontaktu!", R.drawable.ic_contact_person),
+                    PersonContact("Jakub Dąbek", "Programista",
+                            "+48 782-592-297", "jakub.dabek@gmail.com",
                             "Jestem studentem I roku Informatyki na Politechnice Wrocławskiej. " +
-                                    "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
-                    PersonContact("Kamil Zawistowski","Programista",
-                            "+48 668-213-793","zawistowski96kamil@gmail.com",
+                                    "Wszystkich zainteresowanych zapraszam do kontaktu!", R.drawable.ic_contact_person),
+                    PersonContact("Kamil Zawistowski", "Programista",
+                            "+48 668-213-793", "zawistowski96kamil@gmail.com",
                             "Jestem studentem III roku Matematyki Stosowanej na Politechnice Wrocławskiej. " +
-                                    "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person),
-                    PersonContact("Jakub Dąbek","Programista",
-                            "+48 782-592-297","jakub.dabek@gmail.com",
+                                    "Wszystkich zainteresowanych zapraszam do kontaktu!", R.drawable.ic_contact_person),
+                    PersonContact("Jakub Dąbek", "Programista",
+                            "+48 782-592-297", "jakub.dabek@gmail.com",
                             "Jestem studentem I roku Informatyki na Politechnice Wrocławskiej. " +
-                                    "Wszystkich zainteresowanych zapraszam do kontaktu!",R.drawable.ic_contact_person))
+                                    "Wszystkich zainteresowanych zapraszam do kontaktu!", R.drawable.ic_contact_person))
 
             view.adapter = PersonContactRecyclerViewAdapter(list, listener)
         }
@@ -75,15 +59,6 @@ class PersonContactFragment : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
     interface OnPersonContactListFragmentInteractionListener {
         fun onListFragmentInteraction(item: PersonContact)
     }

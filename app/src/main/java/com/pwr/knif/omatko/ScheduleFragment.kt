@@ -5,12 +5,9 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule.view.*
 import kotlinx.android.synthetic.main.layout_main.*
 
@@ -18,15 +15,14 @@ enum class TypeOfSchedule {
     THEORETICAL, POPULARSCIENCE;
 
     companion object {
-        @JvmStatic
-        val KEY = "TYPE_OF_SCHEDULE"
+        const val KEY = "TYPE_OF_SCHEDULE"
     }
 }
 
-class ScheduleFragment() : Fragment() {
+class ScheduleFragment : Fragment() {
 
-    lateinit var pagerAdapter: SchedulePagerAdapter
-    lateinit var typeOfSchedule: TypeOfSchedule
+    private lateinit var pagerAdapter: SchedulePagerAdapter
+    private lateinit var typeOfSchedule: TypeOfSchedule
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,47 +36,25 @@ class ScheduleFragment() : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
 
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_schedule, container, false)
-        Log.d("TAG", container.toString())
         pagerAdapter = SchedulePagerAdapter(
                 childFragmentManager,
                 activity as AppCompatActivity,
                 listOf(
-                        DayOfWeek.FRIDAY,  //.getResourceString(resources),
-                        DayOfWeek.SATURDAY,//.getResourceString(resources),
-                        DayOfWeek.SUNDAY   //.getResourceString(resources)
+                        DayOfWeek.FRIDAY,
+                        DayOfWeek.SATURDAY,
+                        DayOfWeek.SUNDAY
                 ),
                 typeOfSchedule
         )
 
         view.view_pager.adapter = pagerAdapter
-//        if(savedInstanceState != null)
-//            view.view_pager.onRestoreInstanceState(savedInstanceState.getParcelable("STATE"))
-
         activateAppBar(activity.tab_layout, view.view_pager)
 
         return view
     }
 
-//    override fun onSaveInstanceState(outState: Bundle?) {
-//        super.onSaveInstanceState(outState)
-//        outState?.putParcelable("STATE", view?.view_pager?.onSaveInstanceState())
-//    }
-
-    override fun onDestroyView() {
-        Log.d("TAG", "in onDestroyView")
-        //activity.supportFragmentManager.beginTransaction().remove()
-        super.onDestroyView()
-        //activity.supportFragmentManager.saveFragmentInstanceState(this)
-        //for(i in 0..2)
-        //{
-        //    pagerAdapter.destroyItem(activity.content_main, i, pagerAdapter.instantiateItem(activity.content_main, i))
-        //}
-        //pagerAdapter.finishUpdate(activity.content_main)
-    }
-
-    fun activateAppBar(tabLayout: TabLayout, viewPager: ViewPager) {
+    private fun activateAppBar(tabLayout: TabLayout, viewPager: ViewPager) {
         tabLayout.setupWithViewPager(viewPager, true)
     }
 }
