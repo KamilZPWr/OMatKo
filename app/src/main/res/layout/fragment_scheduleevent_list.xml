@@ -9,4 +9,6 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.pwr.knif.omatko.EventsFragment"
-    tools:listitem="@layout/fragment_scheduleevent" />
+    tools:listitem="@layout/fragment_scheduleevent" >
+
+</android.support.v7.widget.RecyclerView>

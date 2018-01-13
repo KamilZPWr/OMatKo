@@ -1,5 +1,7 @@
 package com.pwr.knif.omatko
 
+import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.res.Resources
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -13,11 +15,18 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
 import android.view.View
+import org.jetbrains.anko.doAsync
+import java.lang.ref.WeakReference
+import android.provider.CalendarContract.Instances
+import android.content.ContentUris
+import android.database.Cursor
+import android.provider.CalendarContract
+import android.util.Log
 
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
 
-    override fun toString(): String = "day_of_week_${ this.name.toLowerCase() }"
+    //override fun toString(): String = "day_of_week_${ this.name.toLowerCase() }"
 
     fun getResourceString(res: Resources): String {
         val id = res.getIdentifier(this.toString(), "string", this::class.java.`package`.name)
@@ -40,10 +49,9 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
-
         setSupportActionBar(toolbar)
-
         setupNavigatorDrawer()
 
         val bundles = Array(2) { Bundle() }
@@ -53,6 +61,71 @@ class MainActivity :
         scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
 
         swapManager.changeFragments(scheduleFragments[0], false)
+
+        DatabaseManager.databaseConnection(this)
+
+        //TODO("Make class to get data from FB and update them in roomDB")
+
+        doAsync { DatabaseManager.addEvents(testEvents()) }.get()
+    }
+
+    fun testEvents(): List<Event> {
+        // DB test
+        val timeStart = java.util.Calendar.getInstance().apply {
+            set(2018,3,20,20,0)
+        }
+        val timeEnd = java.util.Calendar.getInstance().apply {
+            set(2018,3,20,21,0)
+        }
+
+        val exampleEvent = Event("eventId","Tytuł wykładu 1","Rodzaj ","miejsce",
+                "Krótki opis",
+                "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
+                timeStart.timeInMillis, timeEnd.timeInMillis,"THEORETICAL","SATURDAY")
+        return listOf(
+                exampleEvent.copy(eventId = "event1", title = "Tytuł Wykłady Sob/1"),
+                exampleEvent.copy(eventId = "event2", title = "Tytuł Wykładu Sob/2"),
+                exampleEvent.copy(eventId = "event3", day = "SUNDAY", title = "Tytuł Wykłady Niedz/1"),
+                exampleEvent.copy(eventId = "event4", day = "SUNDAY", title = "Tytuł Wykładu Niedz/2"))
+    }
+
+    var temporaryHolder: WeakReference<EventsRecyclerViewAdapter.ViewHolder>? = null
+    var temporaryId: Long? = null
+    var temporaryEvent: Event? = null
+
+    @SuppressLint("MissingPermission")
+    fun getCurrentEventId(cr: ContentResolver): Long {
+        with(cr.query(
+                CalendarContract.Events.CONTENT_URI,
+                arrayOf("MAX(${CalendarContract.Events._ID}) as max_id"),
+                null,
+                null,
+                CalendarContract.Events._ID)) {
+            moveToFirst()
+            val maxVal = getLong(getColumnIndex("max_id"))
+            close()
+            return maxVal
+        }
+    }
+
+    override fun onStart() {
+        val id = temporaryId
+        val event = temporaryEvent
+
+        val currentLastId = getCurrentEventId(contentResolver)
+
+        if(currentLastId >= id ?: Long.MAX_VALUE && event != null) {
+
+            event.isChecked = true
+            event.eventCalendarID = currentLastId
+            doAsync { DatabaseManager.updateEvent(event) }
+
+            temporaryHolder?.get()?.update()
+        }
+        temporaryHolder = null
+        temporaryId = null
+        temporaryEvent = null
+        super.onStart()
     }
 
     override fun onBackPressed() {
@@ -79,10 +152,14 @@ class MainActivity :
             }
 
             R.id.nav_fb ->{
+                // delete database for testing
+                doAsync { DatabaseManager.nukeDatabase() }
                 return true
             }
 
             R.id.nav_snap ->{
+                // repopulate database with test data
+                doAsync { DatabaseManager.addEvents(testEvents()) }
                 return true
             }
 
