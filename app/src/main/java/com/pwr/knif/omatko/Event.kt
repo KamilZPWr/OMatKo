@@ -38,6 +38,9 @@ data class Event(
         @ColumnInfo(name = "day")
         val day: String,
 
+        @ColumnInfo(name = "lastModification")
+        var lastModification: Long,
+
         @ColumnInfo(name = "isChecked")
         var isChecked: Boolean = false,
 
@@ -46,4 +49,6 @@ data class Event(
 
         @ColumnInfo(name = "eventCalendarID")
         var eventCalendarID: Long? = null
+
+
 )

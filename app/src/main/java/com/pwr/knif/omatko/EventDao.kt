@@ -11,6 +11,12 @@ interface EventDao {
     @Query("SELECT * FROM events WHERE day = :currentDay AND type = :scheduleType")
     fun getEventsBasedOnDayAndType(currentDay: String, scheduleType: String): List<Event>
 
+    @Query("SELECT * FROM events WHERE eventId = :currentEventId")
+    fun getEventById(currentEventId: String): Event
+
+    @Query("SELECT * FROM events WHERE lastModification < :modificationTime")
+    fun getEventsByLastModification(modificationTime: Long): List<Event>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvents(events: List<Event?>)
 

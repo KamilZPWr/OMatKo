@@ -10,6 +10,14 @@ object DatabaseManager {
         return database.eventDao().getEventsBasedOnDayAndType(day, type)
     }
 
+    fun getEventById(eventId: String): Event {
+        return database.eventDao().getEventById(eventId)
+    }
+
+    fun getEventsByLastModification(modificationTime: Long): List<Event> {
+        return database.eventDao().getEventsByLastModification(modificationTime)
+    }
+
     fun addEvents(events: List<Event?>): Boolean {
         database.eventDao().insertEvents(events)
         return true
