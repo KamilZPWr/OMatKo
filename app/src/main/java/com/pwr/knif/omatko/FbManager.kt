@@ -17,48 +17,50 @@ object FbManager {
                 val events = dataSnapshot.child("events")
                 val modificationTime = Calendar.getInstance().timeInMillis
 
-                events.children.forEach {
-                    doAsync {
-                        val oldEvent = DatabaseManager.getEventById(it.key.toString())
+                events.children.forEach { eventSnapshot ->
+                    val oldEvent = DatabaseManager.getEventById(eventSnapshot.key.toString())
 
-                        if (oldEvent != null) {
-                            Log.e("FB","Update")
-                            val newEvent = Event(it.key.toString(),
-                                    it.child("title").value.toString(),
-                                    it.child("presenter").value.toString(),
-                                    it.child("place").value.toString(),
-                                    it.child("shortDescription").value.toString(),
-                                    it.child("longDescription").value.toString(),
-                                    it.child("beginTime").value.toString().toLong(),
-                                    it.child("endTime").value.toString().toLong(),
-                                    it.child("type").value.toString(),
-                                    it.child("day").value.toString(),
-                                    modificationTime,
-                                    oldEvent.isChecked,
-                                    oldEvent.showLongDescription,
-                                    oldEvent.eventCalendarID)
+                    fun childValue(name: String): String = eventSnapshot.child(name).value.toString()
+                    if (oldEvent != null) {
+                        Log.e("FB", "Update")
+                        val newEvent = Event(
+                                eventSnapshot.key.toString(),
+                                childValue("title"),
+                                childValue("presenter"),
+                                childValue("place"),
+                                childValue("shortDescription"),
+                                childValue("longDescription"),
+                                childValue("beginTime").toLong(),
+                                childValue("endTime").toLong(),
+                                childValue("type"),
+                                childValue("day"),
+                                modificationTime,
+                                oldEvent.isChecked,
+                                oldEvent.showLongDescription,
+                                oldEvent.eventCalendarID
+                        )
 
-                            DatabaseManager.updateEvent(newEvent)
-                        }
-                        else{
-                            val newEvent = Event(it.key.toString(),
-                                    it.child("title").value.toString(),
-                                    it.child("presenter").value.toString(),
-                                    it.child("place").value.toString(),
-                                    it.child("shortDescription").value.toString(),
-                                    it.child("longDescription").value.toString(),
-                                    it.child("beginTime").value.toString().toLong(),
-                                    it.child("endTime").value.toString().toLong(),
-                                    it.child("type").value.toString(),
-                                    it.child("day").value.toString(),
-                                    modificationTime)
+                        DatabaseManager.updateEvent(newEvent)
+                    } else {
+                        val newEvent = Event(
+                                eventSnapshot.key.toString(),
+                                childValue("title"),
+                                childValue("presenter"),
+                                childValue("place"),
+                                childValue("shortDescription"),
+                                childValue("longDescription"),
+                                childValue("beginTime").toLong(),
+                                childValue("endTime").toLong(),
+                                childValue("type"),
+                                childValue("day"),
+                                modificationTime
+                        )
 
-                            DatabaseManager.addEvents(listOf(newEvent))
-                        }
-
-                        val eventsToDelete = DatabaseManager.getEventsByLastModification(modificationTime)
-                        DatabaseManager.deleteEvents(eventsToDelete)
+                        DatabaseManager.addEvents(listOf(newEvent))
                     }
+
+                    val eventsToDelete = DatabaseManager.getEventsByLastModification(modificationTime)
+                    DatabaseManager.deleteEvents(eventsToDelete)
                 }
             }
 

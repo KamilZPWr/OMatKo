@@ -12,7 +12,7 @@ interface EventDao {
     fun getEventsBasedOnDayAndType(currentDay: String, scheduleType: String): List<Event>
 
     @Query("SELECT * FROM events WHERE eventId = :currentEventId")
-    fun getEventById(currentEventId: String): Event
+    fun getEventById(currentEventId: String): Event?
 
     @Query("SELECT * FROM events WHERE lastModification < :modificationTime")
     fun getEventsByLastModification(modificationTime: Long): List<Event>

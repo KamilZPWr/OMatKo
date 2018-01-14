@@ -10,7 +10,7 @@ object DatabaseManager {
         return database.eventDao().getEventsBasedOnDayAndType(day, type)
     }
 
-    fun getEventById(eventId: String): Event {
+    fun getEventById(eventId: String): Event? {
         return database.eventDao().getEventById(eventId)
     }
 
