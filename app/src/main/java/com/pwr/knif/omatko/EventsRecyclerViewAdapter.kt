@@ -1,14 +1,14 @@
 package com.pwr.knif.omatko
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.CalendarContract
+import android.provider.CalendarContract.Events
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -18,8 +18,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 import org.jetbrains.anko.doAsync
-import android.content.Intent
-import android.provider.CalendarContract.Events
 import java.lang.ref.WeakReference
 
 class EventsRecyclerViewAdapter(
@@ -99,7 +97,7 @@ class EventsRecyclerViewAdapter(
 
         fun addEventToCalendar(activity: Activity, event: Event, holder: ViewHolder? = null) {
 
-            val eventId = getNewEventId(activity.contentResolver)
+            val eventId = DatabaseManager.getMaxExistingEventId(activity.contentResolver) + 1
             val intent = Intent(Intent.ACTION_INSERT)
                     .setData(Events.CONTENT_URI)
                     .putExtra(Events._ID, eventId)
@@ -116,21 +114,6 @@ class EventsRecyclerViewAdapter(
                 activity.temporaryId = eventId
                 activity.temporaryEvent = event
                 activity.calendarUsed = true
-            }
-        }
-
-        @SuppressLint("MissingPermission")
-        private fun getNewEventId(cr: ContentResolver): Long {
-            with(cr.query(
-                    Events.CONTENT_URI,
-                    arrayOf("MAX(${Events._ID}) as max_id"),
-                    null,
-                    null,
-                    Events._ID)) {
-                moveToFirst()
-                val maxVal = getLong(getColumnIndex("max_id"))
-                close()
-                return maxVal + 1
             }
         }
 

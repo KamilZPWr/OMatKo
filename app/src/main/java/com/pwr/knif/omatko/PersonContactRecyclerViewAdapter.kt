@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_personcontact.view.*
 import com.pwr.knif.omatko.PersonContactFragment.OnPersonContactListFragmentInteractionListener
+import kotlinx.android.synthetic.main.fragment_personcontact.view.*
 
 class PersonContactRecyclerViewAdapter(
         private val contactsList: List<PersonContact>,

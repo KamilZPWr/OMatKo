@@ -1,9 +1,5 @@
 package com.pwr.knif.omatko
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.ContentResolver
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -12,15 +8,12 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
-import android.view.View
 import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference
-import android.provider.CalendarContract
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
@@ -61,21 +54,6 @@ class MainActivity :
         FbManager.activateValueListener()
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getCurrentEventId(cr: ContentResolver): Long {
-        with(cr.query(
-                CalendarContract.Events.CONTENT_URI,
-                arrayOf("MAX(${CalendarContract.Events._ID}) as max_id"),
-                null,
-                null,
-                CalendarContract.Events._ID)) {
-            moveToFirst()
-            val maxVal = getLong(getColumnIndex("max_id"))
-            close()
-            return maxVal
-        }
-    }
-
     var calendarUsed: Boolean = false
 
     override fun onStart() {
@@ -83,7 +61,7 @@ class MainActivity :
             val id = temporaryId
             val event = temporaryEvent
 
-            val currentLastId = getCurrentEventId(contentResolver)
+            val currentLastId = DatabaseManager.getMaxExistingEventId(contentResolver)
 
             if (currentLastId >= id ?: Long.MAX_VALUE && event != null) {
 
