@@ -14,8 +14,8 @@ object DatabaseManager {
         return database.eventDao().getEventById(eventId)
     }
 
-    fun getEventsByLastModification(modificationTime: Long): List<Event> {
-        return database.eventDao().getEventsByLastModification(modificationTime)
+    fun getOutdatedEvents(modificationTime: Long): List<Event> {
+        return database.eventDao().getOutdatedEvents(modificationTime)
     }
 
     fun addEvents(events: List<Event?>): Boolean {

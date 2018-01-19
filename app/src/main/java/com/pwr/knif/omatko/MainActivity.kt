@@ -76,14 +76,13 @@ class MainActivity :
         }
     }
 
-    override fun onStart() {
-        val id = temporaryId
-        val event = temporaryEvent
+    var calendarUsed: Boolean = false
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALENDAR), 123)
-        } else {
+    override fun onStart() {
+        if(calendarUsed) {
+            val id = temporaryId
+            val event = temporaryEvent
+
             val currentLastId = getCurrentEventId(contentResolver)
 
             if (currentLastId >= id ?: Long.MAX_VALUE && event != null) {

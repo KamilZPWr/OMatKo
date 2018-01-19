@@ -15,7 +15,7 @@ interface EventDao {
     fun getEventById(currentEventId: String): Event?
 
     @Query("SELECT * FROM events WHERE lastModification < :modificationTime")
-    fun getEventsByLastModification(modificationTime: Long): List<Event>
+    fun getOutdatedEvents(modificationTime: Long): List<Event>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvents(events: List<Event?>)

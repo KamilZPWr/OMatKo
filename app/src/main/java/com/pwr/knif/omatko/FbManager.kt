@@ -3,6 +3,7 @@ package com.pwr.knif.omatko
 import android.util.Log
 import com.google.firebase.database.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.doAsyncResult
 import java.util.*
 
 object FbManager {
@@ -11,61 +12,49 @@ object FbManager {
 
     fun activateValueListener() {
 
-        fbDatabase.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        fbDatabase.child("events").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(eventsSnapshot: DataSnapshot) {
 
-                val events = dataSnapshot.child("events")
                 val modificationTime = Calendar.getInstance().timeInMillis
 
-                events.children.forEach { eventSnapshot ->
-                    val oldEvent = DatabaseManager.getEventById(eventSnapshot.key.toString())
+                eventsSnapshot.children.forEach { eventSnapshot ->
+                    val oldEvent = doAsyncResult { DatabaseManager.getEventById(eventSnapshot.key.toString()) }.get()
 
                     fun childValue(name: String): String = eventSnapshot.child(name).value.toString()
+                    val newEvent = Event(
+                            eventSnapshot.key.toString(),
+                            childValue("title"),
+                            childValue("presenter"),
+                            childValue("place"),
+                            childValue("shortDescription"),
+                            childValue("longDescription"),
+                            childValue("beginTime").toLong(),
+                            childValue("endTime").toLong(),
+                            childValue("type"),
+                            childValue("day"),
+                            modificationTime
+                    )
+
                     if (oldEvent != null) {
                         Log.e("FB", "Update")
-                        val newEvent = Event(
-                                eventSnapshot.key.toString(),
-                                childValue("title"),
-                                childValue("presenter"),
-                                childValue("place"),
-                                childValue("shortDescription"),
-                                childValue("longDescription"),
-                                childValue("beginTime").toLong(),
-                                childValue("endTime").toLong(),
-                                childValue("type"),
-                                childValue("day"),
-                                modificationTime,
-                                oldEvent.isChecked,
-                                oldEvent.showLongDescription,
-                                oldEvent.eventCalendarID
-                        )
+                        newEvent.apply {
+                            isChecked = oldEvent.isChecked
+                            showLongDescription = oldEvent.showLongDescription
+                            eventCalendarID = oldEvent.eventCalendarID
+                        }
 
-                        DatabaseManager.updateEvent(newEvent)
+                        doAsync { DatabaseManager.updateEvent(newEvent) }
                     } else {
-                        val newEvent = Event(
-                                eventSnapshot.key.toString(),
-                                childValue("title"),
-                                childValue("presenter"),
-                                childValue("place"),
-                                childValue("shortDescription"),
-                                childValue("longDescription"),
-                                childValue("beginTime").toLong(),
-                                childValue("endTime").toLong(),
-                                childValue("type"),
-                                childValue("day"),
-                                modificationTime
-                        )
-
-                        DatabaseManager.addEvents(listOf(newEvent))
+                        doAsync { DatabaseManager.addEvents(listOf(newEvent)) }
                     }
 
-                    val eventsToDelete = DatabaseManager.getEventsByLastModification(modificationTime)
-                    DatabaseManager.deleteEvents(eventsToDelete)
+                    val eventsToDelete = doAsyncResult { DatabaseManager.getOutdatedEvents(modificationTime) }.get()
+                    doAsync { DatabaseManager.deleteEvents(eventsToDelete) }
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                //TODO: do sth here
+                //TODO: error handling
             }
         })
     }

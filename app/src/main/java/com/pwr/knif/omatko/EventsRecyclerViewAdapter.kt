@@ -115,6 +115,7 @@ class EventsRecyclerViewAdapter(
                 if(holder != null) activity.temporaryHolder = WeakReference(holder)
                 activity.temporaryId = eventId
                 activity.temporaryEvent = event
+                activity.calendarUsed = true
             }
         }
 
