@@ -1,7 +1,7 @@
 package com.pwr.knif.omatko
 
-import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "events")
@@ -38,6 +38,9 @@ data class Event(
         @ColumnInfo(name = "day")
         val day: String,
 
+        @ColumnInfo(name = "lastModification")
+        var lastModification: Long = 0,
+
         @ColumnInfo(name = "isChecked")
         var isChecked: Boolean = false,
 
@@ -46,4 +49,5 @@ data class Event(
 
         @ColumnInfo(name = "eventCalendarID")
         var eventCalendarID: Long? = null
+
 )

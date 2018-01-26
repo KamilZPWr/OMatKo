@@ -1,7 +1,7 @@
 package com.pwr.knif.omatko
 
-import android.support.v7.app.AppCompatActivity
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 
 class SwapManager(private val activity: AppCompatActivity) {
 

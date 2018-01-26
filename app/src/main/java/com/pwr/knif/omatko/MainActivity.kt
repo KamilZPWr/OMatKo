@@ -1,7 +1,5 @@
 package com.pwr.knif.omatko
 
-import android.annotation.SuppressLint
-import android.content.ContentResolver
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -10,13 +8,12 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
-import android.view.View
 import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference
-import android.provider.CalendarContract
 
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
@@ -29,6 +26,9 @@ class MainActivity :
 
     private lateinit var scheduleFragments: List<Fragment>
     private val swapManager = SwapManager(this)
+    var temporaryHolder: WeakReference<EventsRecyclerViewAdapter.ViewHolder>? = null
+    var temporaryId: Long? = null
+    var temporaryEvent: Event? = null
 
     override fun onListFragmentInteraction(item: PersonContact) {
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
@@ -41,6 +41,7 @@ class MainActivity :
         setSupportActionBar(toolbar)
         setupNavigatorDrawer()
 
+
         val bundles = Array(2) { Bundle() }
         bundles[0].putString(TypeOfSchedule.KEY, TypeOfSchedule.THEORETICAL.toString())
         bundles[1].putString(TypeOfSchedule.KEY, TypeOfSchedule.POPULARSCIENCE.toString())
@@ -50,68 +51,30 @@ class MainActivity :
         swapManager.changeFragments(scheduleFragments[0], false)
 
         DatabaseManager.databaseConnection(this)
-
-        //TODO("Make class to get data from FB and update them in roomDB")
-
-        doAsync { DatabaseManager.addEvents(testEvents()) }.get()
+        FbManager.activateValueListener()
     }
 
-    private fun testEvents(): List<Event> {
-        // DB test
-        val timeStart = java.util.Calendar.getInstance().apply {
-            set(2018, 3, 20, 20, 0)
-        }
-        val timeEnd = java.util.Calendar.getInstance().apply {
-            set(2018, 3, 20, 21, 0)
-        }
-
-        val exampleEvent = Event("eventId", "Tytuł wykładu 1", "Rodzaj ", "miejsce",
-                "Krótki opis",
-                "Jest to wykład o niczym, serdecznie nie zapraszam nikogo. Pozdrawiam",
-                timeStart.timeInMillis, timeEnd.timeInMillis, "THEORETICAL", "SATURDAY")
-        return listOf(
-                exampleEvent.copy(eventId = "event1", title = "Tytuł Wykłady Sob/1"),
-                exampleEvent.copy(eventId = "event2", title = "Tytuł Wykładu Sob/2"),
-                exampleEvent.copy(eventId = "event3", day = "SUNDAY", title = "Tytuł Wykłady Niedz/1"),
-                exampleEvent.copy(eventId = "event4", day = "SUNDAY", title = "Tytuł Wykładu Niedz/2"))
-    }
-
-    var temporaryHolder: WeakReference<EventsRecyclerViewAdapter.ViewHolder>? = null
-    var temporaryId: Long? = null
-    var temporaryEvent: Event? = null
-
-    @SuppressLint("MissingPermission")
-    private fun getCurrentEventId(cr: ContentResolver): Long {
-        with(cr.query(
-                CalendarContract.Events.CONTENT_URI,
-                arrayOf("MAX(${CalendarContract.Events._ID}) as max_id"),
-                null,
-                null,
-                CalendarContract.Events._ID)) {
-            moveToFirst()
-            val maxVal = getLong(getColumnIndex("max_id"))
-            close()
-            return maxVal
-        }
-    }
+    var calendarUsed: Boolean = false
 
     override fun onStart() {
-        val id = temporaryId
-        val event = temporaryEvent
+        if(calendarUsed) {
+            val id = temporaryId
+            val event = temporaryEvent
 
-        val currentLastId = getCurrentEventId(contentResolver)
+            val currentLastId = DatabaseManager.getMaxExistingEventId(contentResolver)
 
-        if (currentLastId >= id ?: Long.MAX_VALUE && event != null) {
+            if (currentLastId >= id ?: Long.MAX_VALUE && event != null) {
 
-            event.isChecked = true
-            event.eventCalendarID = currentLastId
-            doAsync { DatabaseManager.updateEvent(event) }
+                event.isChecked = true
+                event.eventCalendarID = currentLastId
+                doAsync { DatabaseManager.updateEvent(event) }
 
-            temporaryHolder?.get()?.update()
+                temporaryHolder?.get()?.update()
+            }
+            temporaryHolder = null
+            temporaryId = null
+            temporaryEvent = null
         }
-        temporaryHolder = null
-        temporaryId = null
-        temporaryEvent = null
         super.onStart()
     }
 
@@ -139,14 +102,12 @@ class MainActivity :
             }
 
             R.id.nav_fb -> {
-                // delete database for testing
-                doAsync { DatabaseManager.nukeDatabase() }
+
                 return true
             }
 
             R.id.nav_snap -> {
-                // repopulate database with test data
-                doAsync { DatabaseManager.addEvents(testEvents()) }
+
                 return true
             }
 
