@@ -9,6 +9,24 @@ import com.pwr.knif.omatko.EventsFragment.Companion.database
 
 object DatabaseManager {
 
+    fun getResultsById(resultId: String): Result? {
+        return database.resultDao().getResultById(resultId)
+    }
+
+    fun getOutdatedResults(modificationTime: Long): List<Result> {
+        return database.resultDao().getOutdatedEvents(modificationTime)
+    }
+
+    fun deleteResults(results: List<Result?>): Boolean {
+        database.resultDao().deleteResults(results)
+        return true
+    }
+
+    fun insertResults(results: List<Result?>): Boolean {
+        database.resultDao().insertResults(results)
+        return true
+    }
+
     fun getEvents(day: String, type: String): List<Event> {
         return database.eventDao().getEventsBasedOnDayAndType(day, type)
     }
