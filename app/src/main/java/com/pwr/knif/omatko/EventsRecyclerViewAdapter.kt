@@ -91,6 +91,7 @@ class EventsRecyclerViewAdapter(
                             event.shortDescription
             }
         }
+
     }
 
     companion object {
@@ -127,5 +128,7 @@ class EventsRecyclerViewAdapter(
             event.eventCalendarID = null
             doAsync { DatabaseManager.updateEvent(event) }
         }
+
     }
+
 }

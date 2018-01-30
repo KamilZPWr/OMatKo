@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ticket_event"
+    android:id="@+id/ticket_place"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/background_not_ticked_event"
+    android:gravity="end"
     android:orientation="vertical"
     android:padding="4pt">
 
 
     <TextView
-        android:id="@+id/tv_event_title"
+        android:id="@+id/tv_place_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -19,17 +20,18 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/tv_event_presenter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Presenter"
-        android:textColor="@android:color/black" />
-
-    <TextView
-        android:id="@+id/tv_event_description"
+        android:id="@+id/tv_place_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="DescriptionDescriptionDescription Description Description Description Description DescriptionDescription "
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_map_link"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -48,8 +48,8 @@ class ScheduleFragment : Fragment() {
                 typeOfSchedule
         )
 
-        view.view_pager.adapter = pagerAdapter
-        activateAppBar(activity.tab_layout, view.view_pager)
+        view.view_pager_schedule.adapter = pagerAdapter
+        activateAppBar(activity.tab_layout, view.view_pager_schedule)
 
         return view
     }

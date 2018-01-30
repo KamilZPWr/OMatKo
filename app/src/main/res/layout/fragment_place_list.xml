@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/place_list"
-    android:name="com.pwr.knif.omatko.PersonContactFragment"
+    android:name="com.pwr.knif.omatko.PlacesFragment"
     android:background="@color/colorWindowBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.pwr.knif.omatko.PersonContactFragment"
-    tools:listitem="@layout/fragment_personcontact" />
+    tools:context=".PlacesFragment"
+    tools:listitem="@layout/fragment_place" />
