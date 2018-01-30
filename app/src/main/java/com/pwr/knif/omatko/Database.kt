@@ -10,10 +10,11 @@ import android.arch.persistence.room.TypeConverters
         exportSchema = false
 )
 
-@TypeConverters((Converters::class))
+@TypeConverters(Converters::class)
 
 abstract class Database : RoomDatabase() {
 
     abstract fun eventDao(): EventDao
     abstract fun resultDao(): ResultDao
+
 }

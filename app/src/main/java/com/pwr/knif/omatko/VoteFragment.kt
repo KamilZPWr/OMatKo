@@ -2,18 +2,17 @@ package com.pwr.knif.omatko
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.pwr.knif.omatko.LoginFragment.Companion.mAuth
 import kotlinx.android.synthetic.main.fragment_vote.view.*
-import com.google.firebase.database.FirebaseDatabase
 import org.jetbrains.anko.doAsyncResult
-import android.support.v7.app.AlertDialog
-
 
 class VoteFragment : Fragment() {
 
@@ -30,8 +29,8 @@ class VoteFragment : Fragment() {
             logOut()
         }
 
-        for (i in 0..4) {
-            voteButtons[i].setOnClickListener {
+        for ((i, button) in voteButtons.withIndex()) {
+            button.setOnClickListener {
 
                 val eventId = getEventId(view)
                 if (checkIfUserCanVote(eventId.toString(), user)) {
@@ -58,21 +57,17 @@ class VoteFragment : Fragment() {
     }
 
     private fun checkIfUserCanVote(eventId: String, user: String): Boolean {
-
-        val votes = doAsyncResult { DatabaseManager.getResultsById(eventId) }.get()
-        return if (votes == null) {
-            Toast.makeText(activity, "Wprowadź poprawny kod wykładu!", Toast.LENGTH_LONG).show()
-            false
-        } else {
-            when (votes.votes.contains(user)) {
-                true -> {
-                    Toast.makeText(activity, "Wykład został już oceniony!", Toast.LENGTH_LONG).show()
-                    false
-                }
-                false -> {
-                    true
-                }
+        val results = doAsyncResult { DatabaseManager.getResultsById(eventId) }.get()
+        return when {
+            results == null -> {
+                Toast.makeText(activity, "Wprowadź poprawny kod wykładu!", Toast.LENGTH_LONG).show()
+                false
             }
+            results.votes.contains(user) -> {
+                Toast.makeText(activity, "Wykład został już oceniony!", Toast.LENGTH_LONG).show()
+                false
+            }
+            else -> true
         }
     }
 
@@ -82,24 +77,20 @@ class VoteFragment : Fragment() {
     }
 
     private fun getEventId(view: View): String? {
+        val eventId = view.editTextEvendId.text
 
-        val eventId = view.editTextEvendId.text.toString()
-
-        return if (eventId != "") {
-            eventId
+        return if (!eventId.isNullOrEmpty()) {
+            eventId.toString()
         } else {
             Toast.makeText(activity, "Wprowadź kod wykładu!", Toast.LENGTH_LONG).show()
             null
         }
-
     }
 
     private fun sendVoteToFirebase(user: String, vote: Int, eventId: String) {
-
         val fbDatabase = FirebaseDatabase.getInstance()
         val reference = fbDatabase.getReference("results/$eventId/$user")
         reference.setValue(vote)
-
     }
 
     fun logOut() {
@@ -108,6 +99,5 @@ class VoteFragment : Fragment() {
         fragmentManager.beginTransaction().replace(R.id.voteFragment, LoginFragment()).commit()
         Toast.makeText(activity, "Użytkownik wylogowany!", Toast.LENGTH_LONG).show()
     }
-
 
 }

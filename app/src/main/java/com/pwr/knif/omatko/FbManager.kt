@@ -7,7 +7,6 @@ import com.google.firebase.database.ValueEventListener
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.doAsyncResult
 import java.util.*
-import kotlin.collections.ArrayList
 
 object FbManager {
 
@@ -93,7 +92,7 @@ object FbManager {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-
         })
     }
+
 }

@@ -22,4 +22,5 @@ interface ResultDao {
 
     @Update()
     fun updateResult(result: Result?)
+
 }

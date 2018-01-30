@@ -5,10 +5,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.auth.FirebaseAuth
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.view.*
-
 
 class LoginFragment : Fragment() {
 
@@ -28,22 +27,18 @@ class LoginFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
         view.buttonLogIn.setOnClickListener {
-            val email = view.ediTextUserMail.text.toString()
-            val password = view.editTextUserPassword.text.toString()
+            val email = view.ediTextUserMail.text
+            val password = view.editTextUserPassword.text
 
-            if (email != "" && password != "") {
-                logIn(email, password)
-            } else {
-                when {
-
-                    email == "" -> Toast.makeText(activity,
-                            "Wprowadź adres email!",
-                            Toast.LENGTH_LONG).show()
-
-                    password == "" -> Toast.makeText(activity,
-                            "Wprowadź hasło!",
-                            Toast.LENGTH_LONG).show()
-                }
+            when {
+                email.isNullOrEmpty() -> Toast.makeText(activity,
+                        "Wprowadź adres email!",
+                        Toast.LENGTH_LONG).show()
+                password.isNullOrEmpty() -> Toast.makeText(activity,
+                        "Wprowadź hasło!",
+                        Toast.LENGTH_LONG).show()
+                else ->
+                    logIn(email.toString(), password.toString())
             }
         }
 
@@ -52,7 +47,7 @@ class LoginFragment : Fragment() {
 
     fun logIn(email: String, password: String) {
         mAuth!!.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity, { task ->
+                .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Toast.makeText(activity, "Możesz przystąpić do oceny wykładu!",
@@ -66,8 +61,7 @@ class LoginFragment : Fragment() {
                         Toast.makeText(activity, "Logowanie nie powiodło się, spróbuj jeszcze raz!",
                                 Toast.LENGTH_LONG).show()
                     }
-                })
-
+                }
     }
 
 }

@@ -10,12 +10,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.pwr.knif.omatko.LoginFragment.Companion.mAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
 import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference
-import com.pwr.knif.omatko.LoginFragment.Companion.mAuth
-
 
 enum class DayOfWeek {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
@@ -131,16 +130,11 @@ class MainActivity :
             }
             R.id.nav_assessment -> {
                 tab_layout.visibility = View.GONE
-                if (mAuth == null) {
+                if (mAuth == null || mAuth!!.currentUser == null) {
                     swapManager.changeFragments(LoginFragment(), false)
                 } else {
-                    if (mAuth!!.currentUser == null) {
-                        swapManager.changeFragments(LoginFragment(), false)
-                    } else {
-                        swapManager.changeFragments(VoteFragment(), false)
-                    }
+                    swapManager.changeFragments(VoteFragment(), false)
                 }
-
             }
             R.id.nav_map -> {
 
@@ -169,6 +163,5 @@ class MainActivity :
 
         nav_view.setNavigationItemSelectedListener(this)
     }
-
 
 }
