@@ -53,8 +53,7 @@ class LoginFragment : Fragment() {
                         Toast.makeText(activity, "Możesz przystąpić do oceny wykładu!",
                                 Toast.LENGTH_LONG).show()
 
-                        val fragmentManager = activity.supportFragmentManager
-                        fragmentManager.beginTransaction().replace(R.id.loginFragment, VoteFragment()).commit()
+                        (activity as MainActivity).swapManager.changeFragments(VoteFragment(), false)
 
                     } else {
                         // If sign in fails, display a message to the user.

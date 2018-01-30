@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.pwr.knif.omatko.LoginFragment.Companion.mAuth
 import kotlinx.android.synthetic.main.fragment_vote.view.*
@@ -73,7 +72,7 @@ class VoteFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        FirebaseAuth.getInstance().signOut()
+        mAuth!!.signOut()
     }
 
     private fun getEventId(view: View): String? {
@@ -94,9 +93,8 @@ class VoteFragment : Fragment() {
     }
 
     fun logOut() {
-        FirebaseAuth.getInstance().signOut()
-        val fragmentManager = activity.supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.voteFragment, LoginFragment()).commit()
+        mAuth!!.signOut()
+        (activity as MainActivity).swapManager.changeFragments(LoginFragment(), false)
         Toast.makeText(activity, "Użytkownik wylogowany!", Toast.LENGTH_LONG).show()
     }
 
