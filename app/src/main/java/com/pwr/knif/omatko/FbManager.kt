@@ -1,6 +1,5 @@
 package com.pwr.knif.omatko
 
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -39,7 +38,6 @@ object FbManager {
                     )
 
                     if (oldEvent != null) {
-                        Log.e("FB", "Update")
                         newEvent.apply {
                             isChecked = oldEvent.isChecked
                             showLongDescription = oldEvent.showLongDescription
@@ -60,5 +58,41 @@ object FbManager {
                 //TODO: error handling
             }
         })
+
+        fbDatabase.child("results").addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(resultsSnapshot: DataSnapshot) {
+
+                val modificationTime = Calendar.getInstance().timeInMillis
+
+                resultsSnapshot.children.forEach {
+
+                    fun getAllVoters(votesSnapshot: DataSnapshot): ArrayList<String> {
+
+                        val voters = arrayListOf<String>()
+
+                        votesSnapshot.children.forEach {
+                            voters.add(it.key.toString())
+                        }
+                        return voters
+                    }
+
+                    val newResult = Result(it.key.toString(), getAllVoters(it), modificationTime)
+
+                    doAsync { DatabaseManager.insertResults(listOf(newResult)) }
+
+                    val resultsToDelete = doAsyncResult { DatabaseManager.getOutdatedResults(modificationTime) }.get()
+
+                    doAsync { DatabaseManager.deleteResults(resultsToDelete) }
+
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
     }
+
 }

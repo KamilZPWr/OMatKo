@@ -13,4 +13,5 @@ class SwapManager(private val activity: AppCompatActivity) {
             commit()
         }
     }
+
 }

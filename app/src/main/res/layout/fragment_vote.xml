@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWindowBackground"
+    android:id="@+id/voteFragment"
+    tools:context=".VoteFragment">
+
+    <LinearLayout
+        android:background="@drawable/background_contact_person"
+        android:padding="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/user_icon"
+            android:src="@drawable/ic_login" />
+
+        <EditText
+            android:id="@+id/editTextEvendId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/kod_wyk_adu"
+            android:inputType="textPersonName" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/buttonVoteOne"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="@string/_1" />
+
+            <Button
+                android:id="@+id/buttonVoteTwo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="@string/_2" />
+
+            <Button
+                android:id="@+id/buttonVoteThree"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="@string/_3" />
+
+            <Button
+                android:id="@+id/buttonVoteFour"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="@string/_4" />
+
+            <Button
+                android:id="@+id/buttonVoteFive"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="@string/_5" />
+        </TableRow>
+
+        <Button
+            android:id="@+id/buttonLogOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wyloguj" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
+

@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.pwr.knif.omatko.LoginFragment.Companion.mAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
 import org.jetbrains.anko.doAsync
@@ -25,10 +26,11 @@ class MainActivity :
         PersonContactFragment.OnPersonContactListFragmentInteractionListener {
 
     private lateinit var scheduleFragments: List<Fragment>
-    private val swapManager = SwapManager(this)
+    val swapManager = SwapManager(this)
     var temporaryHolder: WeakReference<EventsRecyclerViewAdapter.ViewHolder>? = null
     var temporaryId: Long? = null
     var temporaryEvent: Event? = null
+    var calendarUsed: Boolean = false
 
     override fun onListFragmentInteraction(item: PersonContact) {
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
@@ -40,7 +42,6 @@ class MainActivity :
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setupNavigatorDrawer()
-
 
         val bundles = Array(2) { Bundle() }
         bundles[0].putString(TypeOfSchedule.KEY, TypeOfSchedule.THEORETICAL.toString())
@@ -54,10 +55,8 @@ class MainActivity :
         FbManager.activateValueListener()
     }
 
-    var calendarUsed: Boolean = false
-
     override fun onStart() {
-        if(calendarUsed) {
+        if (calendarUsed) {
             val id = temporaryId
             val event = temporaryEvent
 
@@ -130,7 +129,12 @@ class MainActivity :
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_assessment -> {
-
+                tab_layout.visibility = View.GONE
+                if (mAuth == null || mAuth!!.currentUser == null) {
+                    swapManager.changeFragments(LoginFragment(), false)
+                } else {
+                    swapManager.changeFragments(VoteFragment(), false)
+                }
             }
             R.id.nav_map -> {
 
@@ -159,6 +163,5 @@ class MainActivity :
 
         nav_view.setNavigationItemSelectedListener(this)
     }
-
 
 }
