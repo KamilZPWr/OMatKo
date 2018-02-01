@@ -137,6 +137,8 @@ class MainActivity :
                 }
             }
             R.id.nav_map -> {
+                swapManager.changeFragments(AddressBookFragment(), false)
+                tab_layout.visibility = View.VISIBLE
 
             }
             R.id.nav_history -> {
