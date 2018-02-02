@@ -51,4 +51,5 @@ class AddressBookFragment : Fragment() {
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewPager, true)
     }
+
 }

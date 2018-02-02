@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_place.view.*
 
 class PlacesRecyclerViewAdapter(
-        private val placeList: List<Place>
+        private val placeList: List<Place>,
+        private val mapOpener: MapOpener
 ) : RecyclerView.Adapter<PlacesRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,12 +24,16 @@ class PlacesRecyclerViewAdapter(
         holder.placeView.setOnClickListener {
             holder.toggle()
         }
+
+        holder.placeView.btn_map_link.setOnClickListener {
+            mapOpener.openMap(place.location, place.title)
+        }
     }
 
     override fun getItemCount(): Int = placeList.size
 
     inner class ViewHolder(var placeView: View) : RecyclerView.ViewHolder(placeView) {
-        private var place: Place? = null
+        var place: Place? = null
 
         fun fill(place: Place) {
             this.place = place
@@ -41,11 +46,11 @@ class PlacesRecyclerViewAdapter(
 
         fun toggle() {
             with(placeView) {
-                tv_place_description.visibility
-                if (tv_place_description.visibility == View.VISIBLE)
-                    View.GONE
-                else
-                    View.VISIBLE
+                tv_place_description.visibility =
+                        if (tv_place_description.visibility == View.VISIBLE)
+                            View.GONE
+                        else
+                            View.VISIBLE
                 btn_map_link.visibility =
                         if (btn_map_link.visibility == View.VISIBLE)
                             View.GONE

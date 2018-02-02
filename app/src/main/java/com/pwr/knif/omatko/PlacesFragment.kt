@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.maps.model.LatLng
 
 class PlacesFragment : Fragment() {
 
@@ -29,7 +30,13 @@ class PlacesFragment : Fragment() {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = PlacesRecyclerViewAdapter(listOf())
+                adapter = PlacesRecyclerViewAdapter(
+                        listOf(
+                            Place("miejsce 1", "opis1", LatLng(-2.43, 50.4521)),
+                            Place("miejsce 2", "opis2", LatLng(37.13123, 50.4521)),
+                            Place("miejsce 3", "opis3", LatLng(-2.43, 88.755))
+                        ),
+                        activity as MapOpener)
             }
         }
 
