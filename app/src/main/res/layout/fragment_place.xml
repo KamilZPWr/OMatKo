@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ticket_place"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,28 +11,38 @@
     android:padding="4pt">
 
 
-    <TextView
-        android:id="@+id/tv_place_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="Title asdasd"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_place_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Title asdasd"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_map_link"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_map" />
+
+
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_place_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="DescriptionDescriptionDescription Description Description Description Description DescriptionDescription "
         android:textColor="@android:color/black"
         android:visibility="gone" />
-
-    <Button
-        android:id="@+id/btn_map_link"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        android:visibility="gone" />
-
 </LinearLayout>

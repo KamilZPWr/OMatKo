@@ -25,7 +25,7 @@ class PlacesRecyclerViewAdapter(
             holder.toggle()
         }
 
-        holder.placeView.btn_map_link.setOnClickListener {
+        holder.placeView.iv_map_link.setOnClickListener {
             mapOpener.openMap(place.location, place.title)
         }
     }
@@ -48,11 +48,6 @@ class PlacesRecyclerViewAdapter(
             with(placeView) {
                 tv_place_description.visibility =
                         if (tv_place_description.visibility == View.VISIBLE)
-                            View.GONE
-                        else
-                            View.VISIBLE
-                btn_map_link.visibility =
-                        if (btn_map_link.visibility == View.VISIBLE)
                             View.GONE
                         else
                             View.VISIBLE
