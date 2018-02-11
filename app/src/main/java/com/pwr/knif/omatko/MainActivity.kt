@@ -95,18 +95,24 @@ class MainActivity :
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        val swapManager = SwapManager(this)
         when (item.itemId) {
             R.id.nav_instagram -> {
+                val intent = swapManager.getInstagramIntent()
+                startActivity(intent)
                 return true
             }
 
             R.id.nav_fb -> {
-
+                val intent = swapManager.getFacebookIntent()
+                startActivity(intent)
                 return true
             }
 
             R.id.nav_snap -> {
-
+                val intent = swapManager.getSnapchatIntent()
+                startActivity(intent)
                 return true
             }
 
