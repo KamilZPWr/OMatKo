@@ -21,9 +21,6 @@ class PlacesRecyclerViewAdapter(
         val place = placeList[position]
 
         holder.fill(place)
-        holder.placeView.setOnClickListener {
-            holder.toggle()
-        }
 
         holder.placeView.iv_map_link.setOnClickListener {
             mapOpener.openMap(place.location, place.title)
@@ -44,20 +41,8 @@ class PlacesRecyclerViewAdapter(
             }
         }
 
-        fun toggle() {
-            with(placeView) {
-                tv_place_description.visibility =
-                        if (tv_place_description.visibility == View.VISIBLE)
-                            View.GONE
-                        else
-                            View.VISIBLE
-            }
-        }
-
         override fun toString(): String {
             return super.toString() + " '" + place?.title + "'"
         }
-
     }
-
 }

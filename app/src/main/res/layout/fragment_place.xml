@@ -32,9 +32,6 @@
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_map" />
 
-
-
-
     </LinearLayout>
 
     <TextView
@@ -43,6 +40,5 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="DescriptionDescriptionDescription Description Description Description Description DescriptionDescription "
-        android:textColor="@android:color/black"
-        android:visibility="gone" />
+        android:textColor="@android:color/black" />
 </LinearLayout>
