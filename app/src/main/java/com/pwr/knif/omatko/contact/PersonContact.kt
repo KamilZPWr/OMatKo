@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.contact
 
 data class PersonContact(
         val name: String,

@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.schedule
 
 import android.Manifest
 import android.app.Activity
@@ -16,6 +16,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.pwr.knif.omatko.database.DatabaseManager
+import com.pwr.knif.omatko.MainActivity
+import com.pwr.knif.omatko.R
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference

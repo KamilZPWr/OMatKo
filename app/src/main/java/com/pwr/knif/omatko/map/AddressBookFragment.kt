@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.map
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.pwr.knif.omatko.R
 import kotlinx.android.synthetic.main.fragment_address_book.view.*
 import kotlinx.android.synthetic.main.layout_main.*
 

@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.votes
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.database.FirebaseDatabase
-import com.pwr.knif.omatko.LoginFragment.Companion.mAuth
+import com.pwr.knif.omatko.database.DatabaseManager
+import com.pwr.knif.omatko.MainActivity
+import com.pwr.knif.omatko.R
+import com.pwr.knif.omatko.votes.LoginFragment.Companion.mAuth
 import kotlinx.android.synthetic.main.fragment_vote.view.*
 import org.jetbrains.anko.doAsyncResult
 

@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.database
 
 import android.arch.persistence.room.TypeConverter
 import com.google.gson.Gson

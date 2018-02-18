@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.map
 
 import com.google.android.gms.maps.model.LatLng
 

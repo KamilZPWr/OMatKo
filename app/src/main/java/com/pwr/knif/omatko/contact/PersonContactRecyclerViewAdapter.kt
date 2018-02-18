@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.contact
 
 import android.support.v7.widget.RecyclerView
 import android.text.util.Linkify
@@ -6,7 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.pwr.knif.omatko.PersonContactFragment.OnPersonContactListFragmentInteractionListener
+import com.pwr.knif.omatko.contact.PersonContactFragment.OnPersonContactListFragmentInteractionListener
+import com.pwr.knif.omatko.R
 import kotlinx.android.synthetic.main.fragment_personcontact.view.*
 
 class PersonContactRecyclerViewAdapter(

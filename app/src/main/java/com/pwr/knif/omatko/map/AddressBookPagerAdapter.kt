@@ -1,10 +1,11 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.map
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import com.pwr.knif.omatko.R
 
 class AddressBookPagerAdapter(
         manager: FragmentManager,

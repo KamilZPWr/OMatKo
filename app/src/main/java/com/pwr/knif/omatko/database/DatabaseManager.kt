@@ -1,11 +1,13 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.database
 
 import android.annotation.SuppressLint
 import android.arch.persistence.room.Room
 import android.content.ContentResolver
 import android.content.Context
 import android.provider.CalendarContract
-import com.pwr.knif.omatko.EventsFragment.Companion.database
+import com.pwr.knif.omatko.schedule.Event
+import com.pwr.knif.omatko.schedule.EventsFragment.Companion.database
+import com.pwr.knif.omatko.votes.Result
 
 object DatabaseManager {
 

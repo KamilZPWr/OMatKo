@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.votes
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

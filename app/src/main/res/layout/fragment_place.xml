@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/tv_place_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Title asdasd"
             android:textColor="@android:color/black"

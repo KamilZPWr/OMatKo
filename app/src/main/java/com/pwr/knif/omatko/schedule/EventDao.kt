@@ -1,4 +1,4 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.schedule
 
 import android.arch.persistence.room.*
 

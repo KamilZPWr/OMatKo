@@ -1,9 +1,11 @@
-package com.pwr.knif.omatko
+package com.pwr.knif.omatko.database
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.pwr.knif.omatko.schedule.Event
+import com.pwr.knif.omatko.votes.Result
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.doAsyncResult
 import java.util.*

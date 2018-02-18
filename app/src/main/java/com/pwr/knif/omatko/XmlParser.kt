@@ -3,6 +3,7 @@ package com.pwr.knif.omatko
 import android.app.Activity
 import android.content.res.XmlResourceParser
 import com.google.android.gms.maps.model.LatLng
+import com.pwr.knif.omatko.map.Place
 
 
 class XmlPraser {
