@@ -19,6 +19,9 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_scheduleevent.view.*
 import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference
+import java.text.DateFormat
+import java.text.DateFormat.getTimeInstance
+import java.util.*
 
 class EventsRecyclerViewAdapter(
         private val eventList: List<Event>,
@@ -36,25 +39,26 @@ class EventsRecyclerViewAdapter(
         val event = eventList[position]
 
         holder.fill(event)
-        holder.eventView.setOnLongClickListener {
+        holder.eventView.iv_add_to_calendar.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CALENDAR), 123)
-            } else {
+            when {
+                ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) !=
+                        PackageManager.PERMISSION_GRANTED -> ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CALENDAR), 123)
+                ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) !=
+                        PackageManager.PERMISSION_GRANTED -> ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_CALENDAR), 321)
+                else -> {
 
-                if (event.eventCalendarID == null) {
-                    addEventToCalendar(activity, event, holder)
-                } else {
-                    deleteEventInCalendar(context, activity, event)
+                    if (event.eventCalendarID == null) {
+                        addEventToCalendar(activity, event, holder)
+                    } else {
+                        deleteEventInCalendar(context, activity, event)
+                    }
+                    holder.update()
                 }
-                holder.update()
             }
-
-            true
         }
 
-        holder.eventView.setOnClickListener {
+        holder.eventView.iv_show_more.setOnClickListener {
             event.showLongDescription = !event.showLongDescription
             holder.update()
         }
@@ -71,6 +75,11 @@ class EventsRecyclerViewAdapter(
             eventView.apply {
                 tv_event_title.text = event.title
                 tv_event_presenter.text = event.presenter
+
+                val startTime = getTimeInstance(DateFormat.SHORT, Locale.GERMAN).format(event.beginTime)
+                val endTime = getTimeInstance(DateFormat.SHORT, Locale.GERMAN).format(event.endTime)
+                val eventTime = startTime + " - " + endTime
+                tv_event_start_time.text = eventTime
             }
             update()
         }
@@ -84,11 +93,23 @@ class EventsRecyclerViewAdapter(
                         else
                             R.drawable.background_not_ticked_event)
 
+                iv_add_to_calendar.setImageResource(
+                        if (event.isChecked)
+                            R.drawable.ic_remove_from_calendar
+                        else
+                            R.drawable.ic_add_to_calendar)
+
                 tv_event_description.text =
                         if (event.showLongDescription)
                             event.longDescription
                         else
                             event.shortDescription
+
+                iv_show_more.setImageResource(
+                        if (event.showLongDescription)
+                            R.drawable.ic_show_less
+                        else
+                            R.drawable.ic_show_more)
             }
         }
 
@@ -111,7 +132,7 @@ class EventsRecyclerViewAdapter(
             activity.startActivity(intent)
 
             if (activity is MainActivity) {
-                if(holder != null) activity.temporaryHolder = WeakReference(holder)
+                if (holder != null) activity.temporaryHolder = WeakReference(holder)
                 activity.temporaryId = eventId
                 activity.temporaryEvent = event
                 activity.calendarUsed = true

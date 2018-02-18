@@ -10,13 +10,13 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/nav_snap"
-        android:icon="@drawable/ic_snap"
+        android:icon="@drawable/ic_snapchat"
         android:orderInCategory="101"
         android:title="@string/title_ic_snap"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/nav_fb"
-        android:icon="@drawable/ic_fb"
+        android:icon="@drawable/ic_facebook"
         android:orderInCategory="102"
         android:title="@string/title_ic_fb"
         app:showAsAction="ifRoom" />

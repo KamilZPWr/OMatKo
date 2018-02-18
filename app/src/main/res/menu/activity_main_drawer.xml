@@ -6,17 +6,17 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_schedule_theoretical"
-            android:icon="@drawable/ic_schedule"
+            android:icon="@drawable/ic_theoretical_schedule"
             android:title="@string/title_nav_schedule_theoretical" />
 
         <item
             android:id="@+id/nav_schedule_popular_science"
-            android:icon="@drawable/ic_schedule"
+            android:icon="@drawable/ic_popularscience_schedule"
             android:title="@string/title_nav_schedule_popular_science" />
 
         <item
             android:id="@+id/nav_assessment"
-            android:icon="@drawable/ic_assessment"
+            android:icon="@drawable/ic_vote"
             android:title="@string/title_nav_assessment" />
         <item
             android:id="@+id/nav_map"

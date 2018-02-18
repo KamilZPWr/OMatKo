@@ -9,14 +9,44 @@
     android:padding="4pt">
 
 
-    <TextView
-        android:id="@+id/tv_event_title"
+    <TableRow
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="Title asdasd"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
+=======
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_event_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Title asdasd"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_add_to_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_add_to_calendar" />
+
+    </TableRow>
+>>>>>>> master
+
+    <TextView
+        android:id="@+id/tv_event_start_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="18:00"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/tv_event_presenter"
@@ -25,11 +55,25 @@
         android:text="Presenter"
         android:textColor="@android:color/black" />
 
-    <TextView
-        android:id="@+id/tv_event_description"
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="DescriptionDescriptionDescription Description Description Description Description DescriptionDescription "
-        android:textColor="@android:color/black" />
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_event_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="123"
+            android:textColor="@android:color/black" />
+
+        <ImageView
+            android:id="@+id/iv_show_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_show_more" />
+
+    </TableRow>
 
 </LinearLayout>
