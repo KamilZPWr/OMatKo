@@ -1,5 +1,7 @@
 package com.pwr.knif.omatko
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -10,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.maps.model.LatLng
 import com.pwr.knif.omatko.LoginFragment.Companion.mAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main.*
@@ -23,6 +26,7 @@ enum class DayOfWeek {
 class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
+        MapOpener,
         PersonContactFragment.OnPersonContactListFragmentInteractionListener {
 
     private lateinit var scheduleFragments: List<Fragment>
@@ -34,6 +38,14 @@ class MainActivity :
 
     override fun onListFragmentInteraction(item: PersonContact) {
         Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun openMap(location: LatLng, title: String) {
+        val latLng = "${location.latitude},${location.longitude}"
+        val uri = Uri.parse("geo:$latLng?q=$latLng($title)")
+
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,7 +155,8 @@ class MainActivity :
                 }
             }
             R.id.nav_map -> {
-
+                swapManager.changeFragments(AddressBookFragment(), false)
+                tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_history -> {
 

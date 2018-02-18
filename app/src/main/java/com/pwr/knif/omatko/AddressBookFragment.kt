@@ -8,26 +8,24 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_schedule.view.*
+import kotlinx.android.synthetic.main.fragment_address_book.view.*
 import kotlinx.android.synthetic.main.layout_main.*
 
-enum class TypeOfSchedule {
-    THEORETICAL, POPULARSCIENCE;
+enum class AddressBookTabType {
+    OMatKo, FOOD, SIGHTS, ENTERTAINMENT, SHOPPING_AND_STATIONS;
 
     companion object {
-        const val KEY = "TYPE_OF_SCHEDULE"
+        const val KEY = "TYPE_OF_ADDRESS_BOOK"
     }
 }
 
-class ScheduleFragment : Fragment() {
+class AddressBookFragment : Fragment() {
 
-    private lateinit var pagerAdapter: SchedulePagerAdapter
-    private lateinit var typeOfSchedule: TypeOfSchedule
+    private lateinit var pagerAdapter: AddressBookPagerAdapter
+    private val addressBookTabTypes = AddressBookTabType.values().toList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        typeOfSchedule = TypeOfSchedule.valueOf(arguments.getString(TypeOfSchedule.KEY))
     }
 
     override fun onCreateView(
@@ -36,26 +34,22 @@ class ScheduleFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_schedule, container, false)
-        pagerAdapter = SchedulePagerAdapter(
+        val view = inflater.inflate(R.layout.fragment_address_book, container, false)
+        pagerAdapter = AddressBookPagerAdapter(
                 childFragmentManager,
                 activity as AppCompatActivity,
-                listOf(
-                        DayOfWeek.FRIDAY,
-                        DayOfWeek.SATURDAY,
-                        DayOfWeek.SUNDAY
-                ),
-                typeOfSchedule
+                addressBookTabTypes
         )
 
-        view.view_pager_schedule.adapter = pagerAdapter
-        activateAppBar(activity.tab_layout, view.view_pager_schedule)
+        view.view_pager_address_book.adapter = pagerAdapter
+        activateAppBar(activity.tab_layout, view.view_pager_address_book)
 
         return view
     }
 
     private fun activateAppBar(tabLayout: TabLayout, viewPager: ViewPager) {
-        tabLayout.tabMode = TabLayout.MODE_FIXED
+        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewPager, true)
     }
+
 }

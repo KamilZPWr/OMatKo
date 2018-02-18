@@ -41,4 +41,12 @@
     <string name="_5">5</string>
     <string name="wyloguj">Wyloguj</string>
 
+    <string-array name="address_book_tab_names">
+        <item>OMatKo!!!</item>
+        <item>Smacznego</item>
+        <item>Warto zobaczyć</item>
+        <item>Rozrywka</item>
+        <item>Zakupy i dworce</item>
+    </string-array>
+
 </resources>

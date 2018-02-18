@@ -112,6 +112,7 @@ class EventsRecyclerViewAdapter(
                             R.drawable.ic_show_more)
             }
         }
+
     }
 
     companion object {
@@ -148,5 +149,7 @@ class EventsRecyclerViewAdapter(
             event.eventCalendarID = null
             doAsync { DatabaseManager.updateEvent(event) }
         }
+
     }
+
 }
