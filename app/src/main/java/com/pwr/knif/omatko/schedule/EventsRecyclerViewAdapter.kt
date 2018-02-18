@@ -79,8 +79,8 @@ class EventsRecyclerViewAdapter(
                 tv_event_title.text = event.title
                 tv_event_presenter.text = event.presenter
 
-                val startTime = getTimeInstance(DateFormat.SHORT, Locale.GERMAN).format(event.beginTime)
-                val endTime = getTimeInstance(DateFormat.SHORT, Locale.GERMAN).format(event.endTime)
+                val startTime = getTimeInstance(DateFormat.SHORT, Locale.getDefault()).format(event.beginTime)
+                val endTime = getTimeInstance(DateFormat.SHORT, Locale.getDefault()).format(event.endTime)
                 val eventTime = startTime + " - " + endTime
                 tv_event_start_time.text = eventTime
             }
