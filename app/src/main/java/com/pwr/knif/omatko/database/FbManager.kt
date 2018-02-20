@@ -25,6 +25,7 @@ object FbManager {
                     val oldEvent = doAsyncResult { DatabaseManager.getEventById(eventSnapshot.key.toString()) }.get()
 
                     fun childValue(name: String): String = eventSnapshot.child(name).value.toString()
+
                     val newEvent = Event(
                             eventSnapshot.key.toString(),
                             childValue("title"),
@@ -32,8 +33,8 @@ object FbManager {
                             childValue("place"),
                             childValue("shortDescription"),
                             childValue("longDescription"),
-                            childValue("beginTime").toLong(),
-                            childValue("endTime").toLong(),
+                            childValue("beginTime").toFloat().toLong(),
+                            childValue("endTime").toFloat().toLong(),
                             childValue("type"),
                             childValue("day"),
                             modificationTime
