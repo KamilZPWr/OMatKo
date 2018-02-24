@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pwr.knif.omatko.contact.PersonContact
 import com.pwr.knif.omatko.contact.PersonContactFragment
 import com.pwr.knif.omatko.database.DatabaseManager
@@ -66,6 +67,9 @@ class MainActivity :
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setupNavigatorDrawer()
+        FbManager.activateValueListener()
+        DatabaseManager.databaseConnection(this)
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
 
         val bundles = Array(2) { Bundle() }
         bundles[0].putString(TypeOfSchedule.KEY, TypeOfSchedule.THEORETICAL.toString())
@@ -75,8 +79,7 @@ class MainActivity :
 
         swapManager.changeFragments(scheduleFragments[0], false)
 
-        DatabaseManager.databaseConnection(this)
-        FbManager.activateValueListener()
+
     }
 
     override fun onStart() {
