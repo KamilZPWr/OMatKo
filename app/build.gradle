@@ -56,6 +56,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.0'
 
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+
 }
 
 
