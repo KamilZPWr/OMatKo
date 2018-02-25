@@ -14,12 +14,14 @@ import android.view.View
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.messaging.FirebaseMessaging
+import com.pwr.knif.omatko.R.id.*
 import com.pwr.knif.omatko.contact.PersonContact
 import com.pwr.knif.omatko.contact.PersonContactFragment
 import com.pwr.knif.omatko.database.DatabaseManager
 import com.pwr.knif.omatko.database.FbManager
 import com.pwr.knif.omatko.map.AddressBookFragment
 import com.pwr.knif.omatko.map.MapOpener
+import com.pwr.knif.omatko.notifications.MyFirebaseMessagingService.NotificationType
 import com.pwr.knif.omatko.schedule.Event
 import com.pwr.knif.omatko.votes.LoginFragment.Companion.mAuth
 import com.pwr.knif.omatko.schedule.EventsRecyclerViewAdapter
@@ -77,9 +79,29 @@ class MainActivity :
 
         scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
 
-        swapManager.changeFragments(scheduleFragments[0], false)
+        val typeOfNotification = intent.action
 
 
+
+        when (typeOfNotification) {
+            NotificationType.THEORETICAL_SCHEDULE.toString() -> {
+                swapManager.changeFragments(scheduleFragments[0], false)
+                nav_view.setCheckedItem(nav_schedule_theoretical)
+            }
+            NotificationType.POPULARSCIENCE_SCHEDULE.toString() -> {
+                swapManager.changeFragments(scheduleFragments[1], false)
+                nav_view.setCheckedItem(nav_schedule_popular_science)
+            }
+            NotificationType.VOTE.toString() -> {
+                tab_layout.visibility = View.GONE
+                swapManager.changeFragments(LoginFragment(), false)
+                nav_view.setCheckedItem(nav_assessment)
+            }
+            else -> {
+                swapManager.changeFragments(scheduleFragments[0], false)
+                nav_view.setCheckedItem(nav_schedule_theoretical)
+            }
+        }
     }
 
     override fun onStart() {

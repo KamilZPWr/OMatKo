@@ -2,8 +2,9 @@ package com.pwr.knif.omatko.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
-import android.graphics.Color
+import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.support.annotation.RequiresApi
@@ -14,6 +15,7 @@ import com.pwr.knif.omatko.R
 import java.util.*
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.pwr.knif.omatko.MainActivity
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -22,6 +24,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     companion object {
         const val CHANEL_ID = "OMatKoChannel"
+    }
+
+    enum class NotificationType {
+        THEORETICAL_SCHEDULE, POPULARSCIENCE_SCHEDULE, VOTE
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -37,6 +43,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationTitle = remoteMessage.data["title"]
         val notificationMessage = remoteMessage.data["message"]
         val notificationBitmap = getBitmapfromUrl(remoteMessage.data["image-url"].toString())
+        val notificationType = remoteMessage.data["type"]
+
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+        if (notificationType != null){
+            notificationIntent.action = notificationType
+        }
+
+        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notificationBuilder = NotificationCompat.Builder(this, CHANEL_ID)
                 .setLargeIcon(notificationBitmap)
@@ -48,6 +64,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setLights(resources.getColor(R.color.colorBlueOmatko), 500, 500)
+                .setContentIntent(pendingIntent)
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
@@ -61,7 +78,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         adminChannel = NotificationChannel(CHANEL_ID, adminChanelName, NotificationManager.IMPORTANCE_LOW)
         adminChannel.description = adminChanelDescription
         adminChannel.enableLights(true)
-        adminChannel.lightColor = Color.RED
+        adminChannel.lightColor = R.color.colorBlueOmatko
         adminChannel.enableVibration(true)
         notificationManager.createNotificationChannel(adminChannel)
     }
