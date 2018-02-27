@@ -57,9 +57,8 @@ dependencies {
 
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
 
+    implementation 'com.google.firebase:firebase-messaging:11.4.2'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
-
 }
 
 
