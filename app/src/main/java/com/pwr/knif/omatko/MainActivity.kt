@@ -19,6 +19,7 @@ import com.pwr.knif.omatko.contact.PersonContact
 import com.pwr.knif.omatko.contact.PersonContactFragment
 import com.pwr.knif.omatko.database.DatabaseManager
 import com.pwr.knif.omatko.database.FbManager
+import com.pwr.knif.omatko.history.HistoryFragment
 import com.pwr.knif.omatko.map.AddressBookFragment
 import com.pwr.knif.omatko.map.MapOpener
 import com.pwr.knif.omatko.notifications.MyFirebaseMessagingService.NotificationType
@@ -196,7 +197,7 @@ class MainActivity :
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_history -> {
-
+                swapManager.changeFragments(HistoryFragment(),false)
             }
             R.id.nav_sponsors -> {
 

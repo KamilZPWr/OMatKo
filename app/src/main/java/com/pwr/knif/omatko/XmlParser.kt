@@ -2,17 +2,27 @@ package com.pwr.knif.omatko
 
 import android.app.Activity
 import android.content.res.XmlResourceParser
+import android.util.Xml
 import com.google.android.gms.maps.model.LatLng
+import com.pwr.knif.omatko.history.Edition
 import com.pwr.knif.omatko.map.Place
 
 
 class XmlPraser {
-    private val PLACE_TITLE_TAG = "title"
-    private val PLACE_DESCRIPTION_TAG = "description"
-    private val PLACE_LATITUDE_TAG = "latitude"
-    private val PLACE_LONGITUDE_TAG = "longitude"
-    private val PLACE_CATEGORY_TAG = "category"
-    private val PLACE_TAG = "place"
+    companion object {
+        const val PLACE_TITLE_TAG = "title"
+        const val PLACE_DESCRIPTION_TAG = "description"
+        const val PLACE_LATITUDE_TAG = "latitude"
+        const val PLACE_LONGITUDE_TAG = "longitude"
+        const val PLACE_CATEGORY_TAG = "category"
+        const val PLACE_TAG = "place"
+
+        const val EDITION_TAG = "edition"
+        const val EDITION_TITLE_TAG = "title"
+        const val EDITION_DESCRIPTION_TAG = "description"
+        const val EDITION_IMAGE_URL_TAG = "imageUrl"
+    }
+
 
     fun getPlacesFromFile(activity: Activity): List<Place> {
         val place = activity.resources.getXml(R.xml.places)
@@ -34,5 +44,24 @@ class XmlPraser {
             eventType = place.next()
         }
         return places
+    }
+
+    fun getHistoryFromFile(activity: Activity): List<Edition> {
+        val history = activity.resources.getXml(R.xml.history)
+        var eventType = -1
+        val editions = mutableListOf<Edition>()
+
+        while (eventType != XmlResourceParser.END_DOCUMENT) {
+            if (eventType == XmlResourceParser.START_TAG && history.name == EDITION_TAG) {
+
+                val title = history.getAttributeValue(null, EDITION_TITLE_TAG)
+                val desc = history.getAttributeValue(null, EDITION_DESCRIPTION_TAG)
+                val imageUrl = history.getAttributeValue(null, EDITION_IMAGE_URL_TAG)
+
+                editions.add(Edition(title, desc, imageUrl))
+            }
+            eventType = history.next()
+        }
+        return editions
     }
 }

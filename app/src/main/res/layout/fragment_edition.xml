@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWindowBackground"
+    android:padding="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="495dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_contact_person"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/tv_ediotion_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_ticked_event"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:text="@string/edycja_2015"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/tv_edition_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:padding="8dp"
+            android:singleLine="false"
+            android:text="@string/this_is_description_of_omatko_2015_edition_it_was_really_awesome_event_if_you_want_see_more_pictures_click_in_facebook_icon"
+            android:textColor="@android:color/black" />
+
+        <ImageView
+            android:id="@+id/iv_edition_picture"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:contentDescription="@string/zdj_cie_z_edycji_omatko" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
