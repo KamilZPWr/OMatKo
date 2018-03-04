@@ -15,7 +15,6 @@ import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.messaging.FirebaseMessaging
 import com.pwr.knif.omatko.R.id.*
-import com.pwr.knif.omatko.contact.PersonContact
 import com.pwr.knif.omatko.contact.PersonContactFragment
 import com.pwr.knif.omatko.database.DatabaseManager
 import com.pwr.knif.omatko.database.FbManager
@@ -42,8 +41,7 @@ enum class DayOfWeek {
 class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
-        MapOpener,
-        PersonContactFragment.OnPersonContactListFragmentInteractionListener {
+        MapOpener {
 
     private lateinit var scheduleFragments: List<Fragment>
     val swapManager = SwapManager(this)
@@ -51,10 +49,6 @@ class MainActivity :
     var temporaryId: Long? = null
     var temporaryEvent: Event? = null
     var calendarUsed: Boolean = false
-
-    override fun onListFragmentInteraction(item: PersonContact) {
-        Toast.makeText(this, "Contact clicked: ${item.name}", Toast.LENGTH_SHORT).show()
-    }
 
     override fun openMap(location: LatLng, title: String) {
         val latLng = "${location.latitude},${location.longitude}"
@@ -81,8 +75,6 @@ class MainActivity :
         scheduleFragments = bundles.map { ScheduleFragment().apply { arguments = it } }
 
         val typeOfNotification = intent.action
-
-
 
         when (typeOfNotification) {
             NotificationType.THEORETICAL_SCHEDULE.toString() -> {
@@ -197,7 +189,7 @@ class MainActivity :
                 tab_layout.visibility = View.VISIBLE
             }
             R.id.nav_history -> {
-                swapManager.changeFragments(HistoryFragment(),false)
+                swapManager.changeFragments(HistoryFragment(), false)
             }
             R.id.nav_sponsors -> {
 
@@ -220,5 +212,4 @@ class MainActivity :
 
         nav_view.setNavigationItemSelectedListener(this)
     }
-
 }

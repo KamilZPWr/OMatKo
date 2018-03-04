@@ -14,7 +14,6 @@ import com.pwr.knif.omatko.history.HistoryPagerAdapter.Companion.EDITION_IMAGE_U
 import com.pwr.knif.omatko.history.HistoryPagerAdapter.Companion.EDITION_TITLE
 
 
-
 class EditionFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -24,14 +23,13 @@ class EditionFragment : Fragment() {
         val description = arguments?.getString(EDITION_DES)
         val imageUrl = arguments?.getString(EDITION_IMAGE_URL)
 
-
         val config = ImageLoaderConfiguration.Builder(activity).build()
         ImageLoader.getInstance().init(config)
         val imageLoader = ImageLoader.getInstance()
         with(view) {
             tv_ediotion_title.text = title
             tv_edition_description.text = description
-            imageLoader.displayImage(imageUrl,iv_edition_picture)
+            imageLoader.displayImage(imageUrl, iv_edition_picture)
         }
         return view
     }

@@ -1,18 +1,16 @@
 package com.pwr.knif.omatko.contact
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.text.util.Linkify
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.pwr.knif.omatko.contact.PersonContactFragment.OnPersonContactListFragmentInteractionListener
 import com.pwr.knif.omatko.R
 import kotlinx.android.synthetic.main.fragment_personcontact.view.*
 
 class PersonContactRecyclerViewAdapter(
-        private val contactsList: List<PersonContact>,
-        private val listener: OnPersonContactListFragmentInteractionListener?
+        private val contactsList: List<PersonContact>
 ) : RecyclerView.Adapter<PersonContactRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,35 +21,30 @@ class PersonContactRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contact = contactsList[position]
-
         holder.fill(contact)
-
-        holder.contactView.setOnClickListener {
-            listener?.onListFragmentInteraction(holder.personContact!!)
-        }
     }
 
     override fun getItemCount() = contactsList.size
 
-    class ViewHolder(var contactView: View) : RecyclerView.ViewHolder(contactView) {
-        var personContact: PersonContact? = null
+    class ViewHolder(private var contactView: View) : RecyclerView.ViewHolder(contactView) {
+        private var personContact: PersonContact? = null
 
         fun fill(contact: PersonContact) {
             personContact = contact
             contactView.apply {
                 tv_personcontact_name.text = contact.name
-                tv_personcontact_position.text = contact.jobTitle
+                tv_personcontact_position.text = contact.position
                 tv_personcontact_telephone.text = contact.telephoneNumber
                 tv_personcontact_mail.text = contact.mailAddress
                 tv_personcontact_description.text = contact.description
-                img_personcontact.setImageResource(contact.imageId)
-                Log.d(this::class.java.name, Linkify.addLinks(tv_personcontact_telephone, Linkify.PHONE_NUMBERS).toString())
-                Log.d(this::class.java.name, Linkify.addLinks(tv_personcontact_mail, Linkify.EMAIL_ADDRESSES).toString())
+                img_personcontact.setImageResource(getImageId(context, contact.imageId))
+                Linkify.addLinks(tv_personcontact_telephone, Linkify.PHONE_NUMBERS).toString()
+                Linkify.addLinks(tv_personcontact_mail, Linkify.EMAIL_ADDRESSES).toString()
             }
         }
 
-        override fun toString(): String {
-            return super.toString() + " '" + contactView.tv_personcontact_name.text + "'"
+        private fun getImageId(context: Context, imageName: String): Int {
+            return context.resources.getIdentifier("drawable/" + imageName, null, context.packageName)
         }
     }
 }

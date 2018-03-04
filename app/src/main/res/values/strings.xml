@@ -43,6 +43,13 @@
     <string name="edycja_2015">Edycja 2015</string>
     <string name="this_is_description_of_omatko_2015_edition_it_was_really_awesome_event_if_you_want_see_more_pictures_click_in_facebook_icon">This is description of OMatKo 2015 edition. It was really awesome event! If you want see more pictures click in facebook icon.</string>
     <string name="zdj_cie_z_edycji_omatko">Zdjęcie z edycji OMatKo</string>
+    <string name="personContact_name">Imię Nazwisko</string>
+    <string name="personContact_position">Stanowisko</string>
+    <string name="personContact_phoneNumber">phone_number</string>
+    <string name="personContact_number">tel.123-456-789</string>
+    <string name="personContact_mail">e-mail: xxxxxxxxxxxx@xxx.pl</string>
+    <string name="personContact_description">Jestem kimś ważnym na tej konferencji, możecie do mnie dzwonić zawsze i wszędzie!</string>
+    <string name="personContact_img">Photo of contact person</string>
 
     <string-array name="address_book_tab_names">
         <item>OMatKo!!!</item>

@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--TODO: remove mock data-->
+<?xml version="1.0" encoding="utf-8"?><!--TODO: remove mock data-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_margin="8dp"
     android:background="@drawable/background_contact_person"
-    android:padding="2pt"
-    android:layout_margin="8dp">
+    android:orientation="vertical"
+    android:padding="2pt">
 
     <ImageView
         android:id="@+id/img_personcontact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/personContact_img"
         android:paddingTop="2pt"
         app:srcCompat="@drawable/ic_contact_person" />
 
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="2pt"
-        android:text="Imię Nazwisko"
+        android:text="@string/personContact_name"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
@@ -30,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2pt"
-        android:text="Stanowisko"
+        android:layout_marginStart="2pt"
+        android:text="@string/personContact_position"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
@@ -39,8 +40,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2pt"
-        android:contentDescription="phone_number"
-        android:text="tel.123-456-789"
+        android:layout_marginStart="2pt"
+        android:layout_weight="1"
+        android:contentDescription="@string/personContact_phoneNumber"
+        android:text="@string/personContact_number"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
@@ -49,7 +52,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2pt"
-        android:text="e-mail: xxxxxxxxxxxx@xxx.pl"
+        android:layout_marginStart="2pt"
+        android:layout_weight="1"
+        android:text="@string/personContact_mail"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
@@ -58,8 +63,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2pt"
+        android:layout_marginStart="2pt"
+        android:layout_weight="1"
         android:paddingBottom="3pt"
-        android:text="Jestem kimś ważnym na tej konferencji, możecie do mnie dzwonić zawsze i wszędzie!"
+        android:text="@string/personContact_description"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
+
 </LinearLayout>

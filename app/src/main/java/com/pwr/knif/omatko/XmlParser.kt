@@ -2,25 +2,27 @@ package com.pwr.knif.omatko
 
 import android.app.Activity
 import android.content.res.XmlResourceParser
-import android.util.Xml
 import com.google.android.gms.maps.model.LatLng
+import com.pwr.knif.omatko.contact.PersonContact
 import com.pwr.knif.omatko.history.Edition
 import com.pwr.knif.omatko.map.Place
 
 
 class XmlPraser {
     companion object {
-        const val PLACE_TITLE_TAG = "title"
-        const val PLACE_DESCRIPTION_TAG = "description"
-        const val PLACE_LATITUDE_TAG = "latitude"
-        const val PLACE_LONGITUDE_TAG = "longitude"
-        const val PLACE_CATEGORY_TAG = "category"
+        const val TITLE_TAG = "title"
+        const val DESCRIPTION_TAG = "description"
+        const val LATITUDE_TAG = "latitude"
+        const val LONGITUDE_TAG = "longitude"
+        const val CATEGORY_TAG = "category"
         const val PLACE_TAG = "place"
-
         const val EDITION_TAG = "edition"
-        const val EDITION_TITLE_TAG = "title"
-        const val EDITION_DESCRIPTION_TAG = "description"
-        const val EDITION_IMAGE_URL_TAG = "imageUrl"
+        const val IMAGE_URL_TAG = "imageUrl"
+        const val CONTACT_TAG = "person"
+        const val NAME_TAG = "name"
+        const val NUMBER_TAG = "phoneNumber"
+        const val EMAIL_TAG = "email"
+        const val POSITION_TAG = "position"
     }
 
 
@@ -33,11 +35,11 @@ class XmlPraser {
 
             if (eventType == XmlResourceParser.START_TAG && place.name == PLACE_TAG) {
 
-                val title = place.getAttributeValue(null, PLACE_TITLE_TAG)
-                val description = place.getAttributeValue(null, PLACE_DESCRIPTION_TAG)
-                val latitude = place.getAttributeValue(null, PLACE_LATITUDE_TAG).toDouble()
-                val longitude = place.getAttributeValue(null, PLACE_LONGITUDE_TAG).toDouble()
-                val category = place.getAttributeValue(null, PLACE_CATEGORY_TAG)
+                val title = place.getAttributeValue(null, TITLE_TAG)
+                val description = place.getAttributeValue(null, DESCRIPTION_TAG)
+                val latitude = place.getAttributeValue(null, LATITUDE_TAG).toDouble()
+                val longitude = place.getAttributeValue(null, LONGITUDE_TAG).toDouble()
+                val category = place.getAttributeValue(null, CATEGORY_TAG)
                 val location = LatLng(latitude, longitude)
                 places.add(Place(title, description, location, category))
             }
@@ -47,21 +49,43 @@ class XmlPraser {
     }
 
     fun getHistoryFromFile(activity: Activity): List<Edition> {
-        val history = activity.resources.getXml(R.xml.history)
+        val historyXml = activity.resources.getXml(R.xml.history)
         var eventType = -1
         val editions = mutableListOf<Edition>()
 
         while (eventType != XmlResourceParser.END_DOCUMENT) {
-            if (eventType == XmlResourceParser.START_TAG && history.name == EDITION_TAG) {
+            if (eventType == XmlResourceParser.START_TAG && historyXml.name == EDITION_TAG) {
 
-                val title = history.getAttributeValue(null, EDITION_TITLE_TAG)
-                val desc = history.getAttributeValue(null, EDITION_DESCRIPTION_TAG)
-                val imageUrl = history.getAttributeValue(null, EDITION_IMAGE_URL_TAG)
+                val title = historyXml.getAttributeValue(null, TITLE_TAG)
+                val desc = historyXml.getAttributeValue(null, DESCRIPTION_TAG)
+                val imageUrl = historyXml.getAttributeValue(null, IMAGE_URL_TAG)
 
                 editions.add(Edition(title, desc, imageUrl))
             }
-            eventType = history.next()
+            eventType = historyXml.next()
         }
         return editions
+    }
+
+    fun getContactsFromFile(activity: Activity): List<PersonContact> {
+        val contactsXml = activity.resources.getXml(R.xml.contacts)
+        var eventType = -1
+        val contacts = mutableListOf<PersonContact>()
+
+        while (eventType != XmlResourceParser.END_DOCUMENT) {
+            if (eventType == XmlResourceParser.START_TAG && contactsXml.name == CONTACT_TAG) {
+
+                val name = contactsXml.getAttributeValue(null, NAME_TAG)
+                val phoneNumber = contactsXml.getAttributeValue(null, NUMBER_TAG)
+                val email = contactsXml.getAttributeValue(null, EMAIL_TAG)
+                val description = contactsXml.getAttributeValue(null, DESCRIPTION_TAG)
+                val position = contactsXml.getAttributeValue(null, POSITION_TAG)
+                val imageUrl = contactsXml.getAttributeValue(null, IMAGE_URL_TAG)
+
+                contacts.add(PersonContact(name, position, phoneNumber, email, description, imageUrl))
+            }
+            eventType = contactsXml.next()
+        }
+        return contacts
     }
 }
