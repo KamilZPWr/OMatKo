@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.pwr.knif.omatko.contact.PersonContact
 import com.pwr.knif.omatko.history.Edition
 import com.pwr.knif.omatko.map.Place
+import com.pwr.knif.omatko.sponsors.Sponsor
 
 
 class XmlPraser {
@@ -23,6 +24,7 @@ class XmlPraser {
         const val NUMBER_TAG = "phoneNumber"
         const val EMAIL_TAG = "email"
         const val POSITION_TAG = "position"
+        const val IMAGE_ID_TAG = "imageId"
     }
 
 
@@ -87,5 +89,25 @@ class XmlPraser {
             eventType = contactsXml.next()
         }
         return contacts
+    }
+
+    fun getSponsorsFromFile(activity: Activity, typeOfSponsor: String): List<Sponsor> {
+        val sponsorsXml = activity.resources.getXml(R.xml.sponsors)
+        var eventType = -1
+        val sponsors = mutableListOf<Sponsor>()
+
+        while (eventType != XmlResourceParser.END_DOCUMENT) {
+            if (eventType == XmlResourceParser.START_TAG
+                    && sponsorsXml.name == typeOfSponsor.toLowerCase()) {
+                val name = sponsorsXml.getAttributeValue(null, NAME_TAG)
+                val title = sponsorsXml.getAttributeValue(null, TITLE_TAG)
+                val desc = sponsorsXml.getAttributeValue(null, DESCRIPTION_TAG)
+                val imageUrl = sponsorsXml.getAttributeValue(null, IMAGE_ID_TAG)
+
+                sponsors.add(Sponsor(name, title, desc, imageUrl))
+            }
+            eventType = sponsorsXml.next()
+        }
+        return sponsors
     }
 }
