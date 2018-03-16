@@ -1,5 +1,6 @@
 package com.pwr.knif.omatko
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -96,6 +97,8 @@ class MainActivity :
                 nav_view.setCheckedItem(nav_schedule_theoretical)
             }
         }
+
+
     }
 
     override fun onStart() {
@@ -121,10 +124,10 @@ class MainActivity :
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
+        when {
+            drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
+            fragmentManager.backStackEntryCount != 0 -> super.onBackPressed()
+            else -> showExitDialog()
         }
     }
 
@@ -212,5 +215,23 @@ class MainActivity :
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun showExitDialog() {
+        val alertDialogExit = AlertDialog.Builder(this).create()
+        alertDialogExit.setTitle(getString(R.string.action_exit))
+        alertDialogExit.setMessage(getString(R.string.description_confirm_quit))
+
+        alertDialogExit.setButton(
+                AlertDialog.BUTTON_POSITIVE,
+                getString(R.string.action_cancel))
+        { dialog, _ -> dialog!!.dismiss() }
+
+        alertDialogExit.setButton(
+                AlertDialog.BUTTON_NEGATIVE,
+                getString(R.string.action_exit))
+        { dialog, _ -> dialog!!.dismiss(); this.finishAffinity() }
+
+        alertDialogExit.show()
     }
 }
