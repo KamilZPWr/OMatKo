@@ -27,6 +27,7 @@ import com.pwr.knif.omatko.votes.LoginFragment.Companion.mAuth
 import com.pwr.knif.omatko.schedule.EventsRecyclerViewAdapter
 import com.pwr.knif.omatko.schedule.ScheduleFragment
 import com.pwr.knif.omatko.schedule.TypeOfSchedule
+import com.pwr.knif.omatko.sponsors.AllSponsorsFragment
 import com.pwr.knif.omatko.votes.LoginFragment
 import com.pwr.knif.omatko.votes.VoteFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -192,7 +193,7 @@ class MainActivity :
                 swapManager.changeFragments(HistoryFragment(), false)
             }
             R.id.nav_sponsors -> {
-
+                swapManager.changeFragments(AllSponsorsFragment(),false)
             }
             R.id.nav_contact -> {
                 swapManager.changeFragments(PersonContactFragment(), false)

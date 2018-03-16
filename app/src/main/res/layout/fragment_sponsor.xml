@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="false"
+    android:layout_margin="8dp"
+    android:background="@drawable/background_contact_person"
+    android:orientation="vertical"
+    android:padding="2pt">
+
+    <ImageView
+        android:id="@+id/iv_sponsor_logo"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:contentDescription="@string/personContact_img"
+        android:paddingTop="2pt"
+        app:srcCompat="@drawable/ic_contact_person" />
+
+    <TextView
+        android:id="@+id/tv_sponsor_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2pt"
+        android:text="@string/personContact_name"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_sponsor_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/tv_sponsor_description"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="3pt"
+        android:textColor="@android:color/black"
+        android:padding="3dp"
+        android:textSize="14sp" />
+
+</LinearLayout>

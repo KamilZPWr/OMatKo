@@ -32,14 +32,7 @@ class EventsFragment : Fragment() {
 
         if (view is RecyclerView) {
 
-            with(view) {
-                layoutManager = LinearLayoutManager(context)
-                val eventsList = doAsyncResult { DatabaseManager.getEvents(dayAndType[0], dayAndType[1]) }.get()
-                adapter = EventsRecyclerViewAdapter(eventsList, context, activity)
-            }
-
             val context = view.context
-            view.layoutManager = LinearLayoutManager(context)
             var eventsList = doAsyncResult { DatabaseManager.getEvents(dayAndType[0], dayAndType[1]) }.get()
             eventsList = eventsList.sortedBy { it.beginTime }
             view.adapter = EventsRecyclerViewAdapter(eventsList, context, activity)
