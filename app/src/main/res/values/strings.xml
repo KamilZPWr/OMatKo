@@ -27,6 +27,14 @@
         <item>Niedziela</item>
     </string-array>
 
+    <string-array name="type_of_sponsors_group">
+        <item>Sponsorzy</item>
+        <item>Firmy wspierające</item>
+        <item>Patronat honorowy</item>
+        <item>Patroni medialni</item>
+        <item>Organizatorzy</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mail">mail</string>
