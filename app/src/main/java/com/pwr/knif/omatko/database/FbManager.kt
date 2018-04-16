@@ -33,8 +33,8 @@ object FbManager {
                             childValue("place"),
                             childValue("shortDescription"),
                             childValue("longDescription"),
-                            childValue("beginTime").toFloat().toLong(),
-                            childValue("endTime").toFloat().toLong(),
+                            childValue("beginTime").toDouble().toLong()- 2*3600000,
+                            childValue("endTime").toDouble().toLong()- 2*3600000,
                             childValue("type"),
                             childValue("day"),
                             modificationTime

@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pwr.knif.omatko.MainActivity
 import com.pwr.knif.omatko.R
 import kotlinx.android.synthetic.main.fragment_login.view.*
+import java.lang.Exception
 
 class LoginFragment : Fragment() {
 
@@ -29,8 +30,8 @@ class LoginFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
         view.buttonLogIn.setOnClickListener {
-            val email = view.ediTextUserMail.text
-            val password = view.editTextUserPassword.text
+            val email = view.ediTextUserMail.text.trim()
+            val password = view.editTextUserPassword.text.trim()
 
             when {
                 email.isNullOrEmpty() -> Toast.makeText(activity,
@@ -56,13 +57,11 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_LONG).show()
 
                         (activity as MainActivity).swapManager.changeFragments(VoteFragment(), false)
-
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(activity, "Logowanie nie powiodło się, spróbuj jeszcze raz!",
-                                Toast.LENGTH_LONG).show()
                     }
-                }
+                }.addOnFailureListener {
+                    exception: Exception -> Toast.makeText(activity, exception.message + "Wpisany adres to: " + email, Toast.LENGTH_LONG).show() }
+
+
     }
 
 }

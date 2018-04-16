@@ -79,8 +79,8 @@ class EventsRecyclerViewAdapter(
                 tv_event_title.text = event.title
                 tv_event_presenter.text = event.presenter
 
-                val startTime = getTimeInstance(DateFormat.SHORT, Locale.getDefault()).format(event.beginTime)
-                val endTime = getTimeInstance(DateFormat.SHORT, Locale.getDefault()).format(event.endTime)
+                val startTime = getTimeInstance(DateFormat.SHORT, Locale.ENGLISH).format(event.beginTime)
+                val endTime = getTimeInstance(DateFormat.SHORT, Locale.ENGLISH).format(event.endTime)
                 val eventTime = startTime + " - " + endTime
                 tv_event_start_time.text = eventTime
             }
@@ -113,6 +113,12 @@ class EventsRecyclerViewAdapter(
                             R.drawable.ic_show_less
                         else
                             R.drawable.ic_show_more)
+
+                if (tv_event_description.text == ""){
+                    iv_show_more.visibility = View.GONE
+                }else{
+                    iv_show_more.visibility = View.VISIBLE
+                }
             }
         }
 
